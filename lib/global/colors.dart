@@ -5,4 +5,5 @@ class AppColors {
   static const Color accentColor = Color(0xFF393D46);
   static const Color highlighedColor = Color(0xFFC20A0A);
   static const Color borderColor = Color(0xFF393D46);
+  static const Color backgroundColor = Color(0xFFE5E5E5);
 }

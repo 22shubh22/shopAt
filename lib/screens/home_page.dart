@@ -3,6 +3,7 @@ import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/cart_page.dart';
 import 'package:shopat/screens/description_page.dart';
 import 'package:shopat/screens/place_order_page.dart';
+import 'package:shopat/screens/profile_settings_page.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -35,7 +36,14 @@ class HomePage extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileSettingsPage(),
+                ),
+              );
+            },
             icon: Icon(
               Icons.settings,
               color: AppColors.accentColor,

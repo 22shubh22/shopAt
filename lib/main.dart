@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopat/global/colors.dart';
-import 'package:shopat/screens/home_page.dart';
+// import 'package:shopat/screens/home_page.dart';
+import 'package:shopat/screens/login_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
         primaryColor: AppColors.primaryColor,
         accentColor: AppColors.accentColor,
       ),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }
