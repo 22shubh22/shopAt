@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopat/global/colors.dart';
+import 'package:shopat/widgets/chip.dart';
+import 'package:shopat/widgets/order_card.dart';
 
 class MyOrdersPage extends StatelessWidget {
   const MyOrdersPage({Key? key}) : super(key: key);
@@ -7,7 +9,7 @@ class MyOrdersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.backgroundColorLight,
       body: SafeArea(
         child: Column(
           children: [
@@ -43,7 +45,62 @@ class MyOrdersPage extends StatelessWidget {
             ),
             Expanded(
               child: Column(
-                children: [],
+                children: [
+                  SizedBox(
+                    height: 16.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ChipWidget(
+                        chipText: "  All  ",
+                        isActive: true,
+                      ),
+                      ChipWidget(
+                        chipText: " Delivered ",
+                        isActive: false,
+                      ),
+                      ChipWidget(
+                        chipText: " Cancelled ",
+                        isActive: false,
+                      ),
+                      ChipWidget(
+                        chipText: " Pending ",
+                        isActive: false,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 24.0,
+                  ),
+                  OrderCardWidget(
+                    title: "Cotton Saree + 3 items",
+                    cost: 6992,
+                    date: "7 July 2021",
+                    orderStatus: OrderStatus.Delivered,
+                  ),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+                  OrderCardWidget(
+                    title: "Cotton Saree + 3 items",
+                    cost: 6992,
+                    date: "7 July 2021",
+                    orderStatus: OrderStatus.Cancelled,
+                  ),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+                  OrderCardWidget(
+                    title: "Cotton Saree + 3 items",
+                    cost: 6992,
+                    date: "7 July 2021",
+                    orderStatus: OrderStatus.Pending,
+                  ),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+                ],
               ),
             )
           ],

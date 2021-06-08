@@ -8,7 +8,7 @@ class ProfileSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: AppColors.backgroundColorLight,
       body: SafeArea(
         child: Column(
           children: [
