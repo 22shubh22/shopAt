@@ -10,3 +10,5 @@ class AppColors {
   static const Color secondaryColor = Color(0xFF7B61FF);
   static const Color diasbledColor = Color(0xFFD6D6D6);
 }
+
+

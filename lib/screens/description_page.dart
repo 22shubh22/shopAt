@@ -1,10 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:shopat/firebase_repository/src/models/product.dart';
 import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/place_order_page.dart';
 
 class DescriptionPage extends StatelessWidget {
-  const DescriptionPage({Key? key}) : super(key: key);
+  final ProductInfo _product;
+
+  DescriptionPage(this._product);
 
   @override
   Widget build(BuildContext context) {

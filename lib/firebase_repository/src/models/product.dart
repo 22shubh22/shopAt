@@ -27,29 +27,6 @@ class ProductInfo {
       required this.quantityAvailable})
       : this.id = id;
 
-  /*ProductInfo copyWith({
-    String id,
-    String productName,
-    String shopId,
-    String description1,
-    String? description2,
-    String image,
-    int costPrice,
-    int sellingPrice,
-    int quantityAvailable
-  }) {
-    return ProductInfo(
-        id: id ?? this.id,
-        productName: productName ?? this.productName,
-        shopId: shopId ?? this.shopId,
-        description1: description1 ?? this.description1,
-        description2: description2 ?? this.description2,
-        image: image ?? this.image,
-        costPrice: costPrice ?? this.costPrice,
-        sellingPrice: sellingPrice ?? this.sellingPrice,
-        quantityAvailable: quantityAvailable ?? this.quantityAvailable,
-  }*/
-
   @override
   String toString() {
     return "Order($id, $productName)";
