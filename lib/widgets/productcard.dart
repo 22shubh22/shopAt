@@ -1,29 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:shopat/global/colors.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends StatefulWidget {
   final String imageUrl;
   final String id;
   final String productName;
   final String productDescription;
   final String productDescription2;
   final int price;
-  // TODO: give me + and - as working component
   final Function() onClick;
 
   ProductCard(
-      {required this.imageUrl,
+      {Key? key,
+      required this.imageUrl,
       required this.id,
       required this.productName,
       required this.productDescription,
       required this.productDescription2,
       required this.price,
-      required this.onClick});
+      required this.onClick})
+      : super(key: key);
+
+  @override
+  _ProductCardState createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  var quantitySelect = 1;
+  // TODO: give me + and - as working component
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onClick,
+      onTap: widget.onClick,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -41,7 +50,7 @@ class ProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    productName,
+                    widget.productName,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontSize: 16.0,
@@ -49,7 +58,7 @@ class ProductCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4.0),
                   Text(
-                    productDescription,
+                    widget.productDescription,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontSize: 14.0,
@@ -58,7 +67,7 @@ class ProductCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4.0),
                   Text(
-                    productDescription2,
+                    widget.productDescription2,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontSize: 14.0,
@@ -69,7 +78,7 @@ class ProductCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "₹" + price.toString(),
+                        "₹" + widget.price.toString(),
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 16.0,
@@ -84,15 +93,24 @@ class ProductCard extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
-                            child: Icon(
-                              Icons.remove,
-                              color: Colors.white,
+                            child: IconButton(
+                              onPressed: () {
+                                if (quantitySelect >= 1) {
+                                  setState(() {
+                                    quantitySelect--;
+                                  });
+                                }
+                              },
+                              icon: Icon(
+                                Icons.remove,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
                       ),
                       Text(
-                        " x01 ",
+                        quantitySelect.toString(),
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontSize: 16.0,
@@ -106,9 +124,19 @@ class ProductCard extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
+                            child: IconButton(
+                              onPressed: () {
+                                // TODO: max_select is currently five
+                                if (quantitySelect <= 5) {
+                                  setState(() {
+                                    quantitySelect++;
+                                  });
+                                }
+                              },
+                              icon: Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),

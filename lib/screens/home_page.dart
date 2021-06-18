@@ -183,49 +183,48 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PlaceOrder()));
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 15),
+          width: 200.0,
+          height: 50.0,
+          decoration: BoxDecoration(
+            color: AppColors.accentColor,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Checkout",
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  " (₹ 500) ",
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Icon(
+                  Icons.arrow_forward,
+                  color: Colors.white,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
-    //   floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    //   floatingActionButton: GestureDetector(
-    //     onTap: () {
-    //       Navigator.push(
-    //           context, MaterialPageRoute(builder: (context) => PlaceOrder()));
-    //     },
-    //     child: Container(
-    //       padding: EdgeInsets.symmetric(vertical: 15),
-    //       width: 200.0,
-    //       height: 50.0,
-    //       decoration: BoxDecoration(
-    //         color: AppColors.accentColor,
-    //         borderRadius: BorderRadius.circular(30),
-    //       ),
-    //       child: Center(
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           children: [
-    //             Text(
-    //               "Checkout",
-    //               style: TextStyle(
-    //                 fontFamily: "Poppins",
-    //                 color: Colors.white,
-    //               ),
-    //             ),
-    //             Text(
-    //               " (₹ 500) ",
-    //               style: TextStyle(
-    //                 fontFamily: "Poppins",
-    //                 color: Colors.white,
-    //                 fontWeight: FontWeight.bold,
-    //               ),
-    //             ),
-    //             Icon(
-    //               Icons.arrow_forward,
-    //               color: Colors.white,
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }

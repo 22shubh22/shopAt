@@ -46,6 +46,7 @@ class DescriptionPage extends StatelessWidget {
                             ),
                             child: Center(
                               child: Image.network(
+                                  // product.image should rome here.
                                   "https://images.unsplash.com/photo-1615886753866-79396abc446e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"),
                             ),
                           );
@@ -61,7 +62,7 @@ class DescriptionPage extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Cotton Saree",
+                            _product.productName,
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 20.0,
@@ -75,7 +76,9 @@ class DescriptionPage extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: Text(
-                            "Pink saree original collection \nColor: Pink",
+                            _product.description1 +
+                                "\n" +
+                                _product.description2,
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontSize: 16.0,
@@ -94,7 +97,7 @@ class DescriptionPage extends StatelessWidget {
                           ),
                         ),
                         trailing: Text(
-                          "₹ 5250/-",
+                          "₹" + _product.sellingPrice.toString(),
                           style: TextStyle(
                             fontFamily: "Poppins",
                             color: Colors.grey[800],
@@ -106,60 +109,19 @@ class DescriptionPage extends StatelessWidget {
                       Divider(color: Colors.grey),
                       ListTile(
                         title: Text(
-                          "Quantity",
+                          "Save",
                           style: TextStyle(
                             fontFamily: "Poppins",
                             color: Colors.grey[800],
                           ),
                         ),
-                        trailing: SizedBox(
-                          width: 150.0,
-                          child: Row(
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100.0),
-                                  color: AppColors.accentColor,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Icon(
-                                        Icons.remove,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                " x01 ",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 16.0,
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100.0),
-                                  color: AppColors.accentColor,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Icon(
-                                        Icons.add,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                        trailing: Text(
+                          "Save icon",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            color: Colors.grey[800],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
                           ),
                         ),
                       ),
@@ -191,48 +153,6 @@ class DescriptionPage extends StatelessWidget {
               ),
             )
           ],
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => PlaceOrder()));
-          },
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 15),
-            width: 200.0,
-            height: 50.0,
-            decoration: BoxDecoration(
-              color: AppColors.accentColor,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Checkout",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: Colors.white,
-                    ),
-                  ),
-                  Text(
-                    " (₹ 500) ",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-          ),
         ),
       ),
     );
