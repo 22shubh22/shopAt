@@ -18,6 +18,7 @@ class LoginTextField extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 28.0),
       child: TextField(
+        controller: this.controller,
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,

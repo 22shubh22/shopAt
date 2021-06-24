@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/my_orders.dart';
+
+import 'login_page.dart';
 
 class ProfileSettingsPage extends StatelessWidget {
   const ProfileSettingsPage({Key? key}) : super(key: key);
@@ -135,6 +138,37 @@ class ProfileSettingsPage extends StatelessWidget {
                           ),
                         ),
                         Icon(Icons.chevron_right_outlined)
+                      ],
+                    ),
+                  ),
+                  Divider(
+                    color: AppColors.accentColor.withOpacity(0.15),
+                    height: 0.5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 24.0, right: 24.0, top: 24.0, bottom: 24.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            FirebaseAuth.instance.signOut();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()));
+                          },
+                          child: Text(
+                            'Log Out',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),

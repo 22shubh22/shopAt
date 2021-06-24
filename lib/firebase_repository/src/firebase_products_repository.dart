@@ -15,11 +15,21 @@ class FirebaseProductRepository implements ProductsRepository {
 
   @override
   Stream<List<ProductInfo>> approvedProducts() {
-        print('TODO: this needs to be done');
+    print('TODO: this needs to be done');
     return productsCollection.snapshots().map((snapshot) {
       return snapshot.docs
           .map((doc) => ProductInfo.fromEntity(ProductEntity.fromSnapshot(doc)))
           .toList();
     });
+  }
+}
+
+class FirebaseCustomersRepository implements CustomersRepository {
+  final customersCollection =
+      FirebaseFirestore.instance.collection('customers');
+
+  @override
+  Future<void> addNewCustomer(CustomerInfo data) {
+    return customersCollection.add(data.toEntity().toDocument());
   }
 }

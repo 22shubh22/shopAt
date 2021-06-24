@@ -14,3 +14,8 @@ abstract class ProductsRepository {
 
   // Future<String> uploadImage(path, data);
 }
+
+abstract class CustomersRepository {
+  Future<void> addNewCustomer(CustomerInfo data);
+  // Future<void> updateCustomer(CustomerInfo data);
+}

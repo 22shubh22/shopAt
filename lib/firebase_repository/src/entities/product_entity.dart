@@ -1,5 +1,5 @@
 import 'dart:io';
-// TODO: integrate firebase and cloud_firestore with the app
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // TODO: isApproved field in product wntity and model
@@ -54,7 +54,6 @@ class ProductEntity {
   }
 
   static ProductEntity fromSnapshot(DocumentSnapshot snap) {
-    print((snap.data() as dynamic)['quantityAvailable']);
     return ProductEntity(
         snap.id,
         (snap.data() as dynamic)['productName'],

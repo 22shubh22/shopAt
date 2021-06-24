@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/cart_page.dart';
@@ -17,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   final ProductsRepository _productsRepository = FirebaseProductRepository();
 
   final TextEditingController _searchController = TextEditingController();
-
+  String currentUser = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     Stream<List<ProductInfo>> productStream =
