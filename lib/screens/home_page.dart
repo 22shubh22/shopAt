@@ -20,6 +20,14 @@ class _HomePageState extends State<HomePage> {
 
   final TextEditingController _searchController = TextEditingController();
   String? currentUser = AuthService().getUserId();
+
+  int checkoutTotal = 0;
+  updateCheckoutTotal(int total) {
+    setState(() {
+      checkoutTotal += total;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Stream<List<ProductInfo>> productStream =
