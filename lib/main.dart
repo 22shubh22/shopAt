@@ -4,6 +4,7 @@ import 'package:shopat/firebase_repository/auth.dart';
 import 'package:shopat/global/colors.dart';
 // import 'package:shopat/screens/home_page.dart';
 import 'package:shopat/screens/login_page.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,10 @@ class MyApp extends StatelessWidget {
         primaryColor: AppColors.primaryColor,
         accentColor: AppColors.accentColor,
       ),
+      builder: BotToastInit(), //1. call BotToastInit
+      navigatorObservers: [
+        BotToastNavigatorObserver()
+      ], //2. registered route observer
       home: FutureBuilder(
           future: _initialization,
           builder: (context, snapshot) {
