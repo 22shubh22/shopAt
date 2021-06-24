@@ -1,12 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shopat/screens/home_page.dart';
 import 'package:shopat/screens/login_page.dart';
 
 class AuthService {
+  final _instance = FirebaseAuth.instance;
+
   handleAuth() {
     return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: _instance.authStateChanges(),
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
           return HomePage();
@@ -17,8 +20,16 @@ class AuthService {
     );
   }
 
+  isUserLoggedIn() async {
+    print(" instance user: ${_instance.currentUser}");
+  }
+
+  String? getUserId() {
+    return _instance.currentUser?.uid;
+  }
+
   signOut() {
-    FirebaseAuth.instance.signOut();
+    _instance.signOut();
   }
 
   signInWithOTP(smsCode, verId) {
@@ -28,6 +39,6 @@ class AuthService {
   }
 
   signIn(AuthCredential authCreds) {
-    FirebaseAuth.instance.signInWithCredential(authCreds);
+    _instance.signInWithCredential(authCreds);
   }
 }
