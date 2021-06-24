@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:shopat/firebase_repository/src/models/product_model.dart';
 import 'package:shopat/global/colors.dart';
-import 'package:shopat/screens/place_order_page.dart';
+// import 'package:shopat/screens/place_order_page.dart';
 
 class DescriptionPage extends StatelessWidget {
   final ProductInfo _product;
