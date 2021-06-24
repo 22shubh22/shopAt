@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -77,11 +78,13 @@ class _LoginPageState extends State<LoginPage> {
               trailingActionWidget: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: InkWell(
-                  onTap: () {
-                    print(" \n\n TODO: put the send otp action here. \n\n");
-                    print("yo I am debugging" + _phoneCont.text);
-                    // TODO: phone number validation
-                    verifyPhone("+91" + _phoneCont.text);
+                  onTap: () async {
+                    if (_phoneCont.text.trim().length == 10) {
+                      await verifyPhone("+91" + _phoneCont.text);
+                    } else {
+                      BotToast.showText(
+                          text: "Mobile number should be 10 digits");
+                    }
                   },
                   child: Text(
                     'Send OTP',
@@ -150,15 +153,33 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ],
                     ),
-                    onPressedAction: () {
-                      AuthService()
-                          .signInWithOTP(_passwordCont.text, verificationId);
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ),
-                      );
+                    onPressedAction: () async {
+                      // AuthService()
+                      //     .signInWithOTP(_passwordCont.text, verificationId);
+                      // Navigator.pushReplacement(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => HomePage(),
+                      //   ),
+                      // );
+                      try {
+                        await FirebaseAuth.instance
+                            .signInWithCredential(PhoneAuthProvider.credential(
+                          verificationId: verificationId,
+                          smsCode: _passwordCont.text.trim(),
+                        ))
+                            .then((value) async {
+                          if (value.user != null) {
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HomePage()),
+                                (route) => false);
+                          }
+                        });
+                      } catch (e) {
+                        BotToast.showText(text: "Login failed");
+                      }
                     },
                   )
                 : Container(),
@@ -194,17 +215,21 @@ class _LoginPageState extends State<LoginPage> {
     final PhoneVerificationFailed verificationFailed =
         (FirebaseAuthException authException) {
       print('${authException.message}');
+      BotToast.showText(text: '${authException.message}');
     };
 
     final PhoneCodeSent codeSent = (String verId, int? forceResend) {
-      this.verificationId = verId;
       setState(() {
         this.codeSent = true;
+        verificationId = verId;
       });
+      BotToast.showText(text: "OTP sent succesfully");
     };
 
     final PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
-      this.verificationId = verId;
+      setState(() {
+        verificationId = verId;
+      });
     };
     print(phoneNo);
     await FirebaseAuth.instance.verifyPhoneNumber(
