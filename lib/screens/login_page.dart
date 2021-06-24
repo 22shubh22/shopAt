@@ -18,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordCont = TextEditingController();
   late String verificationId, smsCode;
   bool codeSent = false;
+  bool _isOtpSending = false;
+  bool _isLoginLoading = false;
 
   @override
   void initState() {
@@ -77,25 +79,43 @@ class _LoginPageState extends State<LoginPage> {
               textInputType: TextInputType.number,
               trailingActionWidget: Padding(
                 padding: const EdgeInsets.all(12.0),
-                child: InkWell(
-                  onTap: () async {
-                    if (_phoneCont.text.trim().length == 10) {
-                      await verifyPhone("+91" + _phoneCont.text);
-                    } else {
-                      BotToast.showText(
-                          text: "Mobile number should be 10 digits");
-                    }
-                  },
-                  child: Text(
-                    'Send OTP',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16.0,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
+                child: _isOtpSending
+                    ? Text(
+                        'Sending .....',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.0,
+                          color: Colors.black,
+                        ),
+                      )
+                    : InkWell(
+                        onTap: () async {
+                          if (_phoneCont.text.trim().length == 10) {
+                            print("I am here00");
+                            setState(() {
+                              _isOtpSending = true;
+                            });
+                            await verifyPhone("+91" + _phoneCont.text);
+                            print("I am here00");
+                            setState(() {
+                              _isOtpSending = false;
+                            });
+                          } else {
+                            BotToast.showText(
+                                text: "Mobile number should be 10 digits");
+                          }
+                        },
+                        child: Text(
+                          'Send OTP',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
               ),
             ),
             SizedBox(
@@ -119,69 +139,106 @@ class _LoginPageState extends State<LoginPage> {
             ),
             LoginTextField(
               controller: _passwordCont,
-              hint: "Enter  OTP sent to your number",
+              hint: "Enter OTP sent to your number",
               textInputType: TextInputType.number,
             ),
             SizedBox(
               height: 16.0,
             ),
             codeSent && _passwordCont.text.isNotEmpty
-                ? BlackOvalButton(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: 6.0,
+                ? _isLoginLoading
+                    ? BlackOvalButton(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 6.0,
+                            ),
+                            Text(
+                              "Please wait .....",
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 12.0,
+                            ),
+                            CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.white),
+                            ),
+                            SizedBox(
+                              width: 6.0,
+                            ),
+                          ],
                         ),
-                        Text(
-                          "Login",
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w400,
-                          ),
+                        onPressedAction: () {},
+                      )
+                    : BlackOvalButton(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(
+                              width: 6.0,
+                            ),
+                            Text(
+                              "Login",
+                              style: TextStyle(
+                                color: AppColors.primaryColor,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 6.0,
+                            ),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 6.0,
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          width: 6.0,
-                        ),
-                        Icon(
-                          Icons.arrow_forward,
-                          color: Colors.white,
-                        ),
-                        SizedBox(
-                          width: 6.0,
-                        ),
-                      ],
-                    ),
-                    onPressedAction: () async {
-                      // AuthService()
-                      //     .signInWithOTP(_passwordCont.text, verificationId);
-                      // Navigator.pushReplacement(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => HomePage(),
-                      //   ),
-                      // );
-                      try {
-                        await FirebaseAuth.instance
-                            .signInWithCredential(PhoneAuthProvider.credential(
-                          verificationId: verificationId,
-                          smsCode: _passwordCont.text.trim(),
-                        ))
-                            .then((value) async {
-                          if (value.user != null) {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => HomePage()),
-                                (route) => false);
+                        onPressedAction: () async {
+                          // AuthService()
+                          //     .signInWithOTP(_passwordCont.text, verificationId);
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => HomePage(),
+                          //   ),
+                          // );
+                          setState(() {
+                            _isLoginLoading = true;
+                          });
+                          try {
+                            await FirebaseAuth.instance
+                                .signInWithCredential(
+                                    PhoneAuthProvider.credential(
+                              verificationId: verificationId,
+                              smsCode: _passwordCont.text.trim(),
+                            ))
+                                .then((value) async {
+                              if (value.user != null) {
+                                Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomePage()),
+                                    (route) => false);
+                              }
+                            });
+                          } catch (e) {
+                            BotToast.showText(text: "Invalid OTP");
                           }
-                        });
-                      } catch (e) {
-                        BotToast.showText(text: "Login failed");
-                      }
-                    },
-                  )
+                          setState(() {
+                            _isLoginLoading = false;
+                          });
+                        },
+                      )
                 : Container(),
             SizedBox(
               height: 16.0,
