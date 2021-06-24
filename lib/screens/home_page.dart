@@ -166,19 +166,21 @@ class _HomePageState extends State<HomePage> {
                         itemBuilder: (context, index) {
                           final product = snapshot.data![index];
                           return ProductCard(
-                              imageUrl: product.image,
-                              id: product.id.substring(16),
-                              productName: product.productName,
-                              productDescription: product.description1,
-                              productDescription2: product.description2,
-                              price: product.sellingPrice,
-                              onClick: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            DescriptionPage(product)));
-                              });
+                            imageUrl: product.image,
+                            id: product.id.substring(16),
+                            productName: product.productName,
+                            productDescription: product.description1,
+                            productDescription2: product.description2,
+                            price: product.sellingPrice,
+                            quantityAvailable: product.quantityAvailable,
+                            onClick: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DescriptionPage(product)));
+                            },
+                          );
                         },
                       );
                     }))

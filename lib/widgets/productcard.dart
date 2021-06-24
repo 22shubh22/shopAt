@@ -8,7 +8,9 @@ class ProductCard extends StatefulWidget {
   final String productDescription;
   final String productDescription2;
   final int price;
+  final int quantityAvailable;
   final Function() onClick;
+
 
   ProductCard(
       {Key? key,
@@ -18,7 +20,8 @@ class ProductCard extends StatefulWidget {
       required this.productDescription,
       required this.productDescription2,
       required this.price,
-      required this.onClick})
+      required this.onClick,
+      required this.quantityAvailable,})
       : super(key: key);
 
   @override
@@ -27,7 +30,6 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   var quantitySelect = 1;
-  // TODO: give me + and - as working component
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +129,8 @@ class _ProductCardState extends State<ProductCard> {
                             child: IconButton(
                               onPressed: () {
                                 // TODO: max_select is currently five
-                                if (quantitySelect <= 5) {
+                                if (quantitySelect <=
+                                    widget.quantityAvailable) {
                                   setState(() {
                                     quantitySelect++;
                                   });
