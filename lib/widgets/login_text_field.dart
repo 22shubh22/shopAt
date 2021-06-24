@@ -5,12 +5,14 @@ class LoginTextField extends StatelessWidget {
   final TextEditingController controller;
   final Widget? trailingActionWidget;
   final String hint;
+  final TextInputType textInputType;
 
   const LoginTextField({
     Key? key,
     required this.controller,
     this.trailingActionWidget,
     required this.hint,
+    required this.textInputType,
   }) : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class LoginTextField extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 28.0),
       child: TextField(
         controller: this.controller,
+        keyboardType: textInputType,
         decoration: InputDecoration(
           fillColor: Colors.white,
           filled: true,

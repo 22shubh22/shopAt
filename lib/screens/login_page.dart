@@ -20,6 +20,12 @@ class _LoginPageState extends State<LoginPage> {
   bool codeSent = false;
 
   @override
+  void initState() {
+    super.initState();
+    AuthService().isUserLoggedIn();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
@@ -68,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
             LoginTextField(
               controller: _phoneCont,
               hint: "Eg: 9876543210",
+              textInputType: TextInputType.number,
               trailingActionWidget: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: InkWell(
@@ -112,7 +119,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
             LoginTextField(
               controller: _passwordCont,
-              hint: "Enter OTP sent to your number",
+              hint: "Enter  OTP sent to your number",
+              textInputType: TextInputType.number,
             ),
             SizedBox(
               height: 16.0,

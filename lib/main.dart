@@ -2,18 +2,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shopat/firebase_repository/auth.dart';
 import 'package:shopat/global/colors.dart';
+import 'package:shopat/screens/home_page.dart';
 // import 'package:shopat/screens/home_page.dart';
 import 'package:shopat/screens/login_page.dart';
 import 'package:bot_toast/bot_toast.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -26,27 +26,7 @@ class MyApp extends StatelessWidget {
       navigatorObservers: [
         BotToastNavigatorObserver()
       ], //2. registered route observer
-      home: FutureBuilder(
-          future: _initialization,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text('Some Error occured'));
-            }
-            if (snapshot.connectionState == ConnectionState.done) {
-              return AuthService().handleAuth();
-            }
-            return Scaffold(
-              backgroundColor: AppColors.backgroundColor,
-              body: Center(
-                child: Column(
-                  children: [
-                    Image.asset('images/adaptive_icon.png'),
-                    CircularProgressIndicator(),
-                  ],
-                ),
-              ),
-            );
-          }),
+      home: AuthService().getUserId() != null ? HomePage() : LoginPage(),
     );
   }
 }
