@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/my_orders.dart';
+import 'package:shopat/screens/wishlist_page.dart';
 
 import 'login_page.dart';
 
@@ -66,56 +67,66 @@ class ProfileSettingsPage extends StatelessWidget {
                     color: AppColors.accentColor.withOpacity(0.15),
                     height: 0.5,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24.0, right: 24.0, top: 24.0, bottom: 24.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'My Orders',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                          ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MyOrdersPage(),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => MyOrdersPage(),
-                              ),
-                            );
-                          },
-                          child: Icon(Icons.chevron_right_outlined),
-                        )
-                      ],
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 24.0, right: 24.0, top: 24.0, bottom: 24.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'My Orders',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          Icon(Icons.chevron_right_outlined),
+                        ],
+                      ),
                     ),
                   ),
                   Divider(
                     color: AppColors.accentColor.withOpacity(0.15),
                     height: 0.5,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 24.0, right: 24.0, top: 24.0, bottom: 24.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'My Wishlist',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                          ),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WishListPage(),
                         ),
-                        Icon(Icons.chevron_right_outlined)
-                      ],
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 24.0, right: 24.0, top: 24.0, bottom: 24.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'My Wishlist',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          Icon(Icons.chevron_right_outlined)
+                        ],
+                      ),
                     ),
                   ),
                   Divider(
