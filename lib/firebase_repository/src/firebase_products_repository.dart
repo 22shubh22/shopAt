@@ -22,6 +22,8 @@ class FirebaseProductRepository implements ProductsRepository {
           .toList();
     });
   }
+
+  
 }
 
 class FirebaseCustomersRepository implements CustomersRepository {

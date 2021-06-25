@@ -1,6 +1,8 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopat/firebase_repository/auth.dart';
+import 'package:shopat/firebase_repository/src/entities/product_entity.dart';
+import 'package:shopat/firebase_repository/src/firestore_service.dart';
 import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/cart_page.dart';
 import 'package:shopat/screens/description_page.dart';
@@ -21,23 +23,39 @@ class _HomePageState extends State<HomePage> {
   final TextEditingController _searchController = TextEditingController();
   String? currentUser = AuthService().getUserId();
 
+  bool _isListLoading = false;
+  List<ProductEntity> productsList = [];
+
   int checkoutTotal = 0;
   updateCheckoutTotal(int total) {
+    print("IIIIIIIIIIIIIIIIIIIIIIIIBBBBBBBBBBBBBBBBBBBBBBB");
+
     setState(() {
       checkoutTotal += total;
+      print("IIIIIIIIIIIIIIIIIIIIIIII");
+    });
+  }
+
+  getProductsLocal() async {
+    setState(() {
+      _isListLoading = true;
+    });
+    var pList = await FirestoreService().getProductsList();
+    print(pList);
+    setState(() {
+      _isListLoading = false;
+      productsList = pList;
     });
   }
 
   @override
-  Widget build(BuildContext context) {
-    Stream<List<ProductInfo>> productStream =
-        _productsRepository.approvedProducts();
-    callStream() {
-      setState(() {
-        productStream = _productsRepository.approvedProducts();
-      });
-    }
+  void initState() {
+    getProductsLocal();
+    super.initState();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
@@ -151,47 +169,33 @@ class _HomePageState extends State<HomePage> {
               height: 20.0,
             ),
             Expanded(
-                child: StreamBuilder<List<ProductInfo>>(
-                    stream: productStream,
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<ProductInfo>> snapshot) {
-                      if (snapshot.hasError) {
-                        print(productStream);
-                        return Center(
-                          child: Text(
-                            snapshot.error.toString(),
-                          ),
+              child: _isListLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemCount: productsList.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        var product = productsList[index];
+                        return ProductCard(
+                          imageUrl: product.image,
+                          id: product.id.substring(16),
+                          productName: product.productName,
+                          productDescription: product.description1,
+                          productDescription2: product.description2,
+                          price: product.sellingPrice,
+                          quantityAvailable: product.quantityAvailable,
+                          onClick: () {
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => DescriptionPage(product)));
+                          },
                         );
-                      }
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      return ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        scrollDirection: Axis.vertical,
-                        itemCount: snapshot.data!.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          final product = snapshot.data![index];
-                          return ProductCard(
-                            imageUrl: product.image,
-                            id: product.id.substring(16),
-                            productName: product.productName,
-                            productDescription: product.description1,
-                            productDescription2: product.description2,
-                            price: product.sellingPrice,
-                            quantityAvailable: product.quantityAvailable,
-                            onClick: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DescriptionPage(product)));
-                            },
-                          );
-                        },
-                      );
-                    }))
+                      },
+                    ),
+            )
           ],
         ),
       ),
@@ -221,7 +225,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Text(
-                  " (₹ 500) ",
+                  " (₹ $checkoutTotal) ",
                   style: TextStyle(
                     fontFamily: "Poppins",
                     color: Colors.white,
