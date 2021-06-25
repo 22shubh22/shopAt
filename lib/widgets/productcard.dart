@@ -147,7 +147,8 @@ class _ProductCardState extends State<ProductCard> {
                         ),
                       ),
                     ],
-                  )
+                  ),
+                  SizedBox(height: 8.0),
                 ],
               ),
             ],

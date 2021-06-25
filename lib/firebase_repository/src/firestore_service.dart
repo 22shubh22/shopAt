@@ -135,4 +135,39 @@ class FirestoreService {
     }
     return wishList;
   }
+
+  getProfileDetails() async {
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    var data = await _instance.collection('users').doc(phoneNumber).get();
+    String name = data.data()?['name'];
+    String email = data.data()?['email'];
+    String address = data.data()?['address'];
+    return {
+      'name': name,
+      'email': email,
+      'address': address,
+    };
+  }
+
+  updateProfileDetails({
+    required String name,
+    required String email,
+    required String address,
+  }) async {
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    try {
+      await _instance.collection('users').doc(phoneNumber).update({
+        'name': name,
+        'email': email,
+        'address': address,
+      });
+      print("Profile details updated");
+
+      BotToast.showText(text: "Profile details updated");
+    } catch (e) {
+      print("error while updating profile : $e");
+
+      BotToast.showText(text: "Cannot update your details");
+    }
+  }
 }

@@ -9,6 +9,7 @@ import 'package:shopat/screens/description_page.dart';
 // import 'package:shopat/screens/login_page.dart';
 import 'package:shopat/screens/place_order_page.dart';
 import 'package:shopat/screens/profile_settings_page.dart';
+import 'package:shopat/screens/wishlist_page.dart';
 // import 'package:shopat/firebase_repository/firebase_repository.dart';
 import 'package:shopat/widgets/productcard.dart';
 
@@ -36,7 +37,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  getProductsLocal() async {
+  Future<void> getProductsLocal() async {
     setState(() {
       _isListLoading = true;
     });
@@ -69,6 +70,16 @@ class _HomePageState extends State<HomePage> {
         ),
         elevation: 0,
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => WishListPage()));
+            },
+            icon: Icon(
+              Icons.favorite_border_rounded,
+              color: AppColors.accentColor,
+            ),
+          ),
           IconButton(
             onPressed: () {
               Navigator.push(
@@ -170,30 +181,38 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: _isListLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : ListView.builder(
-                      physics: BouncingScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemCount: productsList.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        var product = productsList[index];
-                        return ProductCard(
-                          imageUrl: product.image,
-                          id: product.id.substring(16),
-                          productName: product.productName,
-                          productDescription: product.description1,
-                          productDescription2: product.description2,
-                          price: product.sellingPrice,
-                          quantityAvailable: product.quantityAvailable,
-                          onClick: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => DescriptionPage(product)));
-                          },
-                        );
-                      },
+                  ? Center(
+                      child: CircularProgressIndicator(
+                      valueColor:
+                          new AlwaysStoppedAnimation<Color>(Colors.black),
+                    ))
+                  : RefreshIndicator(
+                      onRefresh: getProductsLocal,
+                      color: Colors.black,
+                      child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: productsList.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          var product = productsList[index];
+                          return ProductCard(
+                            imageUrl: product.image,
+                            id: product.id.substring(16),
+                            productName: product.productName,
+                            productDescription: product.description1,
+                            productDescription2: product.description2,
+                            price: product.sellingPrice,
+                            quantityAvailable: product.quantityAvailable,
+                            onClick: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          DescriptionPage(product)));
+                            },
+                          );
+                        },
+                      ),
                     ),
             )
           ],

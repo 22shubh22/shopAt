@@ -82,7 +82,9 @@ class _DescriptionPageState extends State<DescriptionPage> {
         ),
         body: _isLoading
             ? Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+                ),
               )
             : Stack(
                 children: [
