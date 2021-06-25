@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shopat/firebase_repository/auth.dart';
+import 'package:shopat/firebase_repository/src/firestore_service.dart';
 import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/home_page.dart';
 import 'package:shopat/widgets/black_oval_button.dart';
@@ -224,6 +225,9 @@ class _LoginPageState extends State<LoginPage> {
                             ))
                                 .then((value) async {
                               if (value.user != null) {
+                                await FirestoreService().getUserByPhone(
+                                    "+91" + _phoneCont.text,
+                                    AuthService().getUserId());
                                 Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
