@@ -39,7 +39,7 @@ class ProductEntity {
     };
   }
 
-  static ProductEntity fromJson(Map<String, Object> json) {
+  static ProductEntity fromJson(Map<String, dynamic> json) {
     return ProductEntity(
       json["id"] as String,
       json["productName"] as String,

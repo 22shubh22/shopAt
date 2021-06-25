@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shopat/firebase_repository/src/entities/product_entity.dart';
 
 class FirestoreService {
   //firestore instance to user multiple times.
@@ -12,7 +13,7 @@ class FirestoreService {
         'phoneNumber': phoneNumber,
         'uid': uid,
         'address': "",
-        'name': "Dundi Raja Vamsi Reddy Garuu",
+        'name': "",
         'email': "",
         'wishlist': [],
         'orders': [],
@@ -22,5 +23,16 @@ class FirestoreService {
       print(
           "User with phone number $phoneNumber already exists. Just logging in");
     }
+  }
+
+  Future<List<ProductEntity>> getProductsList() async {
+    List<ProductEntity> productsList = [];
+    var products = await _instance.collection('products').get();
+
+    for (var i in products.docs) {
+      var data = i.data();
+      productsList.add(ProductEntity.fromJson(data));
+    }
+    return productsList;
   }
 }

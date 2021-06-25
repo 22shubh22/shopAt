@@ -130,7 +130,7 @@ class _ProductCardState extends State<ProductCard> {
                         child: IconButton(
                           onPressed: () {
                             // TODO: max_select is currently five
-                            if (quantitySelect <= widget.quantityAvailable) {
+                            if (quantitySelect < widget.quantityAvailable) {
                               setState(() {
                                 quantitySelect++;
                               });
