@@ -195,21 +195,24 @@ class _HomePageState extends State<HomePage> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           var product = productsList[index];
-                          return ProductCard(
-                            imageUrl: product.image,
-                            id: product.id.substring(16),
-                            productName: product.productName,
-                            productDescription: product.description1,
-                            productDescription2: product.description2,
-                            price: product.sellingPrice,
-                            quantityAvailable: product.quantityAvailable,
-                            onClick: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          DescriptionPage(product)));
-                            },
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: ProductCard(
+                              imageUrl: product.image,
+                              id: product.id.substring(16),
+                              productName: product.productName,
+                              productDescription: product.description1,
+                              productDescription2: product.description2,
+                              price: product.sellingPrice,
+                              quantityAvailable: product.quantityAvailable,
+                              onClick: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DescriptionPage(product)));
+                              },
+                            ),
                           );
                         },
                       ),

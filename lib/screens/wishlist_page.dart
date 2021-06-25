@@ -98,134 +98,137 @@ class _WishListPageState extends State<WishListPage> {
                               itemCount: _wishListItems.length,
                               itemBuilder: (context, index) {
                                 WishListItem item = _wishListItems[index];
-                                return Container(
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 12.0),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(24.0),
+                                return Padding(
+                                 padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 12.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(24.0),
+                                      ),
                                     ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.25,
-                                          child: FittedBox(
-                                            fit: BoxFit.scaleDown,
-                                            child: Row(
-                                              children: [
-                                                FlutterLogo(size: 80.0),
-                                                SizedBox(width: 20.0),
-                                              ],
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.25,
+                                            child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Row(
+                                                children: [
+                                                  FlutterLogo(size: 80.0),
+                                                  SizedBox(width: 20.0),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "${item.productName}",
-                                              style: TextStyle(
-                                                fontFamily: "Poppins",
-                                                fontSize: 16.0,
-                                              ),
-                                            ),
-                                            SizedBox(height: 4.0),
-                                            Text(
-                                              "${item.description1}",
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontFamily: "Poppins",
-                                                fontSize: 14.0,
-                                                color: Colors.grey[400],
-                                              ),
-                                            ),
-                                            SizedBox(height: 4.0),
-                                            Text(
-                                              "${item.description2}",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontFamily: "Poppins",
-                                                fontSize: 14.0,
-                                                color: Colors.grey[400],
-                                              ),
-                                            ),
-                                            SizedBox(height: 8.0),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  "₹ " + "${item.sellingPrice}",
-                                                  style: TextStyle(
-                                                    fontFamily: "Poppins",
-                                                    fontSize: 16.0,
-                                                  ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${item.productName}",
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 16.0,
                                                 ),
-                                                SizedBox(width: 48.0),
-                                                InkWell(
-                                                  onTap: () async {
-                                                    await FirestoreService()
-                                                        .removeProductToWishList(
-                                                            item.id);
-                                                    getWishList();
-                                                  },
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                      color: Color(0xFFC20A0A),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              50.0),
+                                              ),
+                                              SizedBox(height: 4.0),
+                                              Text(
+                                                "${item.description1}",
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 14.0,
+                                                  color: Colors.grey[400],
+                                                ),
+                                              ),
+                                              SizedBox(height: 4.0),
+                                              Text(
+                                                "${item.description2}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 14.0,
+                                                  color: Colors.grey[400],
+                                                ),
+                                              ),
+                                              SizedBox(height: 8.0),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "₹ " + "${item.sellingPrice}",
+                                                    style: TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 16.0,
                                                     ),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        left: 12.0,
-                                                        right: 12.0,
-                                                        top: 8.0,
-                                                        bottom: 8.0,
+                                                  ),
+                                                  SizedBox(width: 48.0),
+                                                  InkWell(
+                                                    onTap: () async {
+                                                      await FirestoreService()
+                                                          .removeProductToWishList(
+                                                              item.id);
+                                                      getWishList();
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        color: Color(0xFFC20A0A),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                50.0),
                                                       ),
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            'Remove',
-                                                            style: TextStyle(
-                                                              fontFamily:
-                                                                  "Poppins",
-                                                              fontSize: 14.0,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets.only(
+                                                          left: 12.0,
+                                                          right: 12.0,
+                                                          top: 8.0,
+                                                          bottom: 8.0,
+                                                        ),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              'Remove',
+                                                              style: TextStyle(
+                                                                fontFamily:
+                                                                    "Poppins",
+                                                                fontSize: 14.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                color: Color(
+                                                                    0xFFF6F7FB),
+                                                              ),
+                                                            ),
+                                                            Icon(
+                                                              Icons
+                                                                  .delete_outline,
                                                               color: Color(
                                                                   0xFFF6F7FB),
                                                             ),
-                                                          ),
-                                                          Icon(
-                                                            Icons
-                                                                .delete_outline,
-                                                            color: Color(
-                                                                0xFFF6F7FB),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ],
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
