@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shopat/firebase_repository/auth.dart';
 import 'package:shopat/firebase_repository/src/entities/product_entity.dart';
 
 class FirestoreService {
@@ -34,5 +35,15 @@ class FirestoreService {
       productsList.add(ProductEntity.fromJson(data));
     }
     return productsList;
+  }
+
+  Future<bool> isItemWishListed(String id) async{
+    String phoneNumber = AuthService().getPhoneNumber()??"";
+    var data = await _instance.collection('users').doc(phoneNumber).get();
+    List wishList = data.data()?['wishlist'];
+    for(var i in ){
+      
+    }
+    return true;
   }
 }

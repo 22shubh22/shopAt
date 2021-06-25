@@ -187,10 +187,10 @@ class _HomePageState extends State<HomePage> {
                           price: product.sellingPrice,
                           quantityAvailable: product.quantityAvailable,
                           onClick: () {
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => DescriptionPage(product)));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DescriptionPage(product)));
                           },
                         );
                       },
