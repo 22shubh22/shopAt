@@ -30,6 +30,12 @@ class AuthService {
     return _instance.currentUser?.uid;
   }
 
+   String? getPhoneNumber() {
+    print(_instance.currentUser);
+    print(_instance.currentUser?.phoneNumber.toString());
+    return _instance.currentUser?.phoneNumber;
+  }
+
   signOut() {
     _instance.signOut();
   }
