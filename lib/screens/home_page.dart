@@ -27,6 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   bool _isListLoading = false;
   List<ProductEntity> productsList = [];
+  List<ProductEntity> productsFilteredList = [];
   List<CartItem> cartList = [];
 
   int checkoutTotal = 0;
@@ -49,8 +50,20 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _isListLoading = false;
       productsList = pList;
+      productsFilteredList = pList;
       cartList = cList;
     });
+  }
+
+  filterProducts(String query) {
+    productsFilteredList = [];
+
+    for (var i in productsList) {
+      if (i.productName.toLowerCase().contains(query)) {
+        productsFilteredList.add(i);
+      }
+    }
+    setState(() {});
   }
 
   @override
@@ -133,6 +146,18 @@ class _HomePageState extends State<HomePage> {
                   Icons.search,
                   color: Colors.grey[700],
                 ),
+                suffixIcon: InkWell(
+                  onTap: () {
+                    _searchController.clear();
+                    setState(() {
+                      productsFilteredList = productsList;
+                    });
+                  },
+                  child: Icon(
+                    Icons.close,
+                    color: Colors.grey[700],
+                  ),
+                ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
                     color: Color(0xFF393D4699),
@@ -146,6 +171,9 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
+              onChanged: (String query) {
+                filterProducts(query.toLowerCase());
+              },
               controller: _searchController,
             ),
             SizedBox(
@@ -198,11 +226,11 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.black,
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
-                        itemCount: productsList.length,
+                        itemCount: productsFilteredList.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           int notOfItems = 0;
-                          var product = productsList[index];
+                          var product = productsFilteredList[index];
                           for (var i in cartList) {
                             if (i.id == product.id) {
                               notOfItems = i.numberOfItems;
