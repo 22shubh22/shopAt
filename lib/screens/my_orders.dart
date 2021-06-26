@@ -17,13 +17,15 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
   bool _isLoading = false;
   List<Map<String, dynamic>> ordersList = [];
 
+  String _chipSelected = "all";
+
   @override
   void initState() {
     getOrderDetails();
     super.initState();
   }
 
-  getOrderDetails() async {
+  Future<void> getOrderDetails() async {
     setState(() {
       _isLoading = true;
     });
@@ -31,6 +33,20 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  bool toShowOrder(String status) {
+    if (_chipSelected == 'all') {
+      return true;
+    } else if (_chipSelected == 'delivered') {
+      return status == 'Delivered';
+    } else if (_chipSelected == 'cancelled') {
+      return status == 'Cancelled';
+    } else if (_chipSelected == 'pending') {
+      return status == 'Pending';
+    } else {
+      return true;
+    }
   }
 
   @override
@@ -81,65 +97,118 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                   )
                 : ordersList.length == 0
                     ? Expanded(
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "No orders to show",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontSize: 20.0,
-                            ),
+                        child: RefreshIndicator(
+                          color: Colors.black,
+                          onRefresh: getOrderDetails,
+                          child: ListView(
+                            children: [
+                              Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.75,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "No orders to show",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 20.0,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       )
                     : Expanded(
                         child: Column(
                           children: [
-                            // SizedBox(
-                            //   height: 16.0,
-                            // ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            //   children: [
-                            //     ChipWidget(
-                            //       chipText: "  All  ",
-                            //       isActive: true,
-                            //     ),
-                            //     ChipWidget(
-                            //       chipText: " Delivered ",
-                            //       isActive: false,
-                            //     ),
-                            //     ChipWidget(
-                            //       chipText: " Cancelled ",
-                            //       isActive: false,
-                            //     ),
-                            //     ChipWidget(
-                            //       chipText: " Pending ",
-                            //       isActive: false,
-                            //     ),
-                            //   ],
-                            // ),
+                            SizedBox(
+                              height: 16.0,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _chipSelected = 'all';
+                                    });
+                                  },
+                                  child: ChipWidget(
+                                    chipText: "  All  ",
+                                    isActive: _chipSelected == 'all',
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _chipSelected = 'delivered';
+                                    });
+                                  },
+                                  child: ChipWidget(
+                                    chipText: " Delivered ",
+                                    isActive: _chipSelected == 'delivered',
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _chipSelected = 'cancelled';
+                                    });
+                                  },
+                                  child: ChipWidget(
+                                    chipText: " Cancelled ",
+                                    isActive: _chipSelected == 'cancelled',
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      _chipSelected = 'pending';
+                                    });
+                                  },
+                                  child: ChipWidget(
+                                    chipText: " Pending ",
+                                    isActive: _chipSelected == 'pending',
+                                  ),
+                                ),
+                              ],
+                            ),
                             SizedBox(
                               height: 24.0,
                             ),
                             Expanded(
-                              child: ListView.builder(
-                                  itemCount: ordersList.length,
-                                  itemBuilder: (context, index) {
-                                    CartItem cartItem = ordersList[index]['cartItems'][0];
-                                    return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 12.0),
-                                      child: OrderCardWidget(
-                                        title: 
-                                        ordersList[index]['totalItems'] > 1 ?
-                                        "${cartItem.productName} + ${ordersList[index]['totalItems'] -1} items" : "${cartItem.productName}",
-                                        cost: ordersList[index]['totalBillAmount'],
-                                        date: DateFormat('yMMMd').format(DateTime.parse(ordersList[index]['createdAt'])),
-                                        orderStatus: ordersList[index]['status'],
-                                      ),
-                                    );
-                                  }),
+                              child: RefreshIndicator(
+                                color: Colors.black,
+                                onRefresh: getOrderDetails,
+                                child: ListView.builder(
+                                    itemCount: ordersList.length,
+                                    itemBuilder: (context, index) {
+                                      CartItem cartItem =
+                                          ordersList[index]['cartItems'][0];
+                                      return toShowOrder(
+                                              ordersList[index]['status'])
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 12.0),
+                                              child: OrderCardWidget(
+                                                title: ordersList[index]
+                                                            ['totalItems'] >
+                                                        1
+                                                    ? "${cartItem.productName} + ${ordersList[index]['totalItems'] - 1} items"
+                                                    : "${cartItem.productName}",
+                                                cost: ordersList[index]
+                                                    ['totalBillAmount'],
+                                                date: DateFormat('yMMMd')
+                                                    .format(DateTime.parse(
+                                                        ordersList[index]
+                                                            ['createdAt'])),
+                                                orderStatus: ordersList[index]
+                                                    ['status'],
+                                              ),
+                                            )
+                                          : Container();
+                                    }),
+                              ),
                             ),
                           ],
                         ),
