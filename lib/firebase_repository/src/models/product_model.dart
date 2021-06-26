@@ -14,6 +14,7 @@ class ProductInfo {
   final int costPrice;
   final int sellingPrice;
   final int quantityAvailable;
+  final List tag;
 
   ProductInfo(
       {required String id,
@@ -24,7 +25,8 @@ class ProductInfo {
       required this.image,
       required this.costPrice,
       required this.sellingPrice,
-      required this.quantityAvailable})
+      required this.quantityAvailable,
+      required this.tag})
       : this.id = id;
 
   @override
@@ -34,7 +36,7 @@ class ProductInfo {
 
   ProductEntity toEntity() {
     return ProductEntity(id, productName, shopId, description1, description2,
-        image, costPrice, sellingPrice, quantityAvailable);
+        image, costPrice, sellingPrice, quantityAvailable, tag);
   }
 
   static ProductInfo fromEntity(ProductEntity entity) {
@@ -48,6 +50,7 @@ class ProductInfo {
       costPrice: entity.costPrice,
       sellingPrice: entity.sellingPrice,
       quantityAvailable: entity.quantityAvailable,
+      tag: entity.tag,
     );
   }
 }

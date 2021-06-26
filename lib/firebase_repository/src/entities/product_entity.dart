@@ -13,6 +13,7 @@ class ProductEntity {
   final int costPrice;
   final int sellingPrice;
   final int quantityAvailable;
+  final List tag;
 
   ProductEntity(
       this.id,
@@ -23,7 +24,8 @@ class ProductEntity {
       this.image,
       this.costPrice,
       this.sellingPrice,
-      this.quantityAvailable);
+      this.quantityAvailable,
+      this.tag);
 
   Map<String, Object> toJson() {
     return {
@@ -35,22 +37,23 @@ class ProductEntity {
       "image": image,
       "costPrice": costPrice,
       "sellingPrice": sellingPrice,
-      "quantityAvailable": quantityAvailable
+      "quantityAvailable": quantityAvailable,
+      "tag": tag
     };
   }
 
   static ProductEntity fromJson(Map<String, dynamic> json) {
     return ProductEntity(
-      json["id"] as String,
-      json["productName"] as String,
-      json["shopId"] as String,
-      json["description1"] as String,
-      json["description2"] as String,
-      json["image"] as String,
-      json["costPrice"] as int,
-      json["sellingPrice"] as int,
-      json["quantityAvailable"] as int,
-    );
+        json["id"] as String,
+        json["productName"] as String,
+        json["shopId"] as String,
+        json["description1"] as String,
+        json["description2"] as String,
+        json["image"] as String,
+        json["costPrice"] as int,
+        json["sellingPrice"] as int,
+        json["quantityAvailable"] as int,
+        json["tag"] as List);
   }
 
   static ProductEntity fromSnapshot(DocumentSnapshot snap) {
@@ -63,7 +66,8 @@ class ProductEntity {
         (snap.data() as dynamic)['image'],
         (snap.data() as dynamic)['costPrice'],
         (snap.data() as dynamic)['sellingPrice'],
-        (snap.data() as dynamic)['quantityAvailable']);
+        (snap.data() as dynamic)['quantityAvailable'],
+        (snap.data() as dynamic)['tag']);
   }
 
   Map<String, Object> toDocument() {
@@ -76,7 +80,8 @@ class ProductEntity {
       "image": image,
       "costPrice": costPrice,
       "sellingPrice": sellingPrice,
-      "quantityAvailable": quantityAvailable
+      "quantityAvailable": quantityAvailable,
+      "tag": tag
     };
   }
 }
