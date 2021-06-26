@@ -159,7 +159,12 @@ class _CartState extends State<Cart> {
                                               fit: BoxFit.scaleDown,
                                               child: Row(
                                                 children: [
-                                                  FlutterLogo(size: 80.0),
+                                                  Image.network(
+                                                    item.image,
+                                                    height: 80.0,
+                                                    width: 80.0,
+                                                    fit: BoxFit.contain,
+                                                  ),
                                                   SizedBox(width: 20.0),
                                                 ],
                                               ),
