@@ -183,7 +183,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "${productsList.length} items",
+                  "${productsFilteredList.length} items",
                   style: TextStyle(
                     fontFamily: "Poppins",
                     color: Colors.grey[800],

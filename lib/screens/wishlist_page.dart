@@ -99,7 +99,7 @@ class _WishListPageState extends State<WishListPage> {
                               itemBuilder: (context, index) {
                                 WishListItem item = _wishListItems[index];
                                 return Padding(
-                                 padding: const EdgeInsets.only(bottom: 8.0),
+                                  padding: const EdgeInsets.only(bottom: 8.0),
                                   child: Container(
                                     margin:
                                         EdgeInsets.symmetric(horizontal: 12.0),
@@ -122,7 +122,12 @@ class _WishListPageState extends State<WishListPage> {
                                               fit: BoxFit.scaleDown,
                                               child: Row(
                                                 children: [
-                                                  FlutterLogo(size: 80.0),
+                                                  Image.network(
+                                                    item.image,
+                                                    height: 80.0,
+                                                    width: 80.0,
+                                                    fit: BoxFit.contain,
+                                                  ),
                                                   SizedBox(width: 20.0),
                                                 ],
                                               ),
@@ -168,7 +173,8 @@ class _WishListPageState extends State<WishListPage> {
                                                         .spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "₹ " + "${item.sellingPrice}",
+                                                    "₹ " +
+                                                        "${item.sellingPrice}",
                                                     style: TextStyle(
                                                       fontFamily: "Poppins",
                                                       fontSize: 16.0,
@@ -184,14 +190,16 @@ class _WishListPageState extends State<WishListPage> {
                                                     },
                                                     child: Container(
                                                       decoration: BoxDecoration(
-                                                        color: Color(0xFFC20A0A),
+                                                        color:
+                                                            Color(0xFFC20A0A),
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                50.0),
+                                                            BorderRadius
+                                                                .circular(50.0),
                                                       ),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
+                                                            const EdgeInsets
+                                                                .only(
                                                           left: 12.0,
                                                           right: 12.0,
                                                           top: 8.0,
