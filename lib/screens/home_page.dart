@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                 fontFamily: "Poppins",
               ),
               decoration: InputDecoration(
-                hintText: "Try searching something",
+                hintText: "Search Tag",
                 hintStyle: TextStyle(
                   fontFamily: "Poppins",
                   color: const Color(0xFF393D4699),
