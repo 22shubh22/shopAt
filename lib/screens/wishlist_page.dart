@@ -116,6 +116,7 @@ class _WishListPageState extends State<WishListPage> {
                                                   item.costPrice,
                                                   item.sellingPrice,
                                                   item.quantityAvailable,
+                                                  [],
                                                 ))));
                                   },
                                   child: Padding(
