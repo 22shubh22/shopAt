@@ -1,8 +1,10 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:shopat/firebase_repository/src/firestore_service.dart';
 import 'package:shopat/firebase_repository/src/models/cart_item.dart';
 import 'package:shopat/global/colors.dart';
+import 'package:shopat/screens/home_page.dart';
 import 'package:shopat/widgets/separator.dart';
 
 class PlaceOrder extends StatefulWidget {
@@ -21,6 +23,8 @@ class _PlaceOrderState extends State<PlaceOrder> {
   int totalAmount = 0;
   bool _isLoading = false;
   String address = "";
+
+  bool _isPlacingOrder = false;
   @override
   void initState() {
     calculatingTheCosts(widget.cartsList);
@@ -248,24 +252,70 @@ class _PlaceOrderState extends State<PlaceOrder> {
             ),
           ),
           SizedBox(height: 8.0),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 15),
-            width: 150.0,
-            height: 50.0,
-            decoration: BoxDecoration(
-              color: AppColors.accentColor,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Center(
-              child: Text(
-                "Place Order",
-                style: TextStyle(
-                  fontFamily: "Poppins",
-                  color: Colors.white,
+          _isPlacingOrder
+              ? Container(
+                  padding: EdgeInsets.symmetric(vertical: 15),
+                  width: MediaQuery.of(context).size.width * 0.40,
+                  height: 50.0,
+                  decoration: BoxDecoration(
+                    color: AppColors.accentColor,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Placing Order ....",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              : InkWell(
+                  onTap: () async {
+                    setState(() {
+                      _isPlacingOrder = true;
+                    });
+                    var result = await FirestoreService().addNewOrder(
+                      widget.cartsList,
+                      totalAmount,
+                      totalItems,
+                    );
+                    if (result['res'] == true) {
+                      setState(() {
+                        _isPlacingOrder = false;
+                      });
+
+                      while (Navigator.canPop(context)) {
+                        Navigator.of(context).pop();
+                      }
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                      );
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    width: MediaQuery.of(context).size.width * 0.40,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      color: AppColors.accentColor,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Place Order",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
         ],
       ),
     );
