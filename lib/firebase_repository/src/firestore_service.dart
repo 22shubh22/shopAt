@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shopat/firebase_repository/auth.dart';
 import 'package:shopat/firebase_repository/src/entities/product_entity.dart';
+import 'package:shopat/firebase_repository/src/models/cart_item.dart';
 import 'package:shopat/firebase_repository/src/models/wishlist_item.dart';
 
 class FirestoreService {
@@ -168,6 +169,159 @@ class FirestoreService {
       print("error while updating profile : $e");
 
       BotToast.showText(text: "Cannot update your details");
+    }
+  }
+
+  Future<bool> isItemAddedToCart(String pId) async {
+    print("One");
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    var data = await _instance.collection('users').doc(phoneNumber).get();
+    List cartList = data.data()?['cart'];
+    bool _isProductAdded = false;
+    for (var i in cartList) {
+      print("Two");
+      if (i['id'] == pId) {
+        _isProductAdded = true;
+        break;
+      }
+    }
+    return _isProductAdded;
+  }
+
+  addProductToCartList(
+    ProductEntity product,
+    int numberOfItems,
+  ) async {
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    var data = await _instance.collection('users').doc(phoneNumber).get();
+
+    List cartList = data.data()?['cart'];
+
+    cartList.add({
+      "id": product.id,
+      "productName": product.productName,
+      "shopId": product.shopId,
+      "description1": product.description1,
+      "description2": product.description2,
+      "image": product.image,
+      "costPrice": product.costPrice,
+      "sellingPrice": product.sellingPrice,
+      "quantityAvailable": product.quantityAvailable,
+      "addedOn": DateTime.now().toString(),
+      "numberOfItems": numberOfItems,
+    });
+
+    try {
+      await _instance
+          .collection('users')
+          .doc(phoneNumber)
+          .update({'cart': cartList});
+
+      print(" Item added to cart");
+
+      BotToast.showText(text: "Item added to your cart");
+      return {
+        'res': true,
+      };
+    } catch (e) {
+      print("error adding item to cart : $e");
+
+      BotToast.showText(text: "Cannot add item to your cart right now.");
+      return {
+        'res': false,
+      };
+    }
+  }
+
+  removeItemFromCartList(
+    String productId,
+  ) async {
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    var data = await _instance.collection('users').doc(phoneNumber).get();
+
+    List cartList = data.data()?['cart'];
+    int? indexToRemove;
+    for (var i in cartList) {
+      if (i['id'] == productId) {
+        indexToRemove = cartList.indexOf(i);
+        break;
+      }
+    }
+    if (indexToRemove != null) {
+      cartList.removeAt(indexToRemove);
+    }
+
+    try {
+      await _instance
+          .collection('users')
+          .doc(phoneNumber)
+          .update({'cart': cartList});
+
+      print(" Item removed from cart");
+
+      BotToast.showText(text: "Item removed from your cart");
+      return {
+        'res': true,
+      };
+    } catch (e) {
+      print("error removing item from cart : $e");
+
+      BotToast.showText(text: "Cannot remove item from your cart right now.");
+      return {
+        'res': false,
+      };
+    }
+  }
+
+  Future<List<CartItem>> getUsercartList() async {
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    List<CartItem> cartList = [];
+    var user = await _instance.collection('users').doc(phoneNumber).get();
+
+    for (var i in user.data()?['cart']) {
+      cartList.add(CartItem.fromJson(i));
+    }
+    return cartList;
+  }
+
+  updateItemFromCartList(
+    String productId,
+    int numberOfItems,
+  ) async {
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    var data = await _instance.collection('users').doc(phoneNumber).get();
+
+    List cartList = data.data()?['cart'];
+    int? indexToUpdate;
+    for (var i in cartList) {
+      if (i['id'] == productId) {
+        indexToUpdate = cartList.indexOf(i);
+        break;
+      }
+    }
+    if (indexToUpdate != null) {
+      cartList.elementAt(indexToUpdate)['numberOfItems'] = numberOfItems;
+    }
+
+    try {
+      await _instance
+          .collection('users')
+          .doc(phoneNumber)
+          .update({'cart': cartList});
+
+      print("Item count updated in cart");
+
+      BotToast.showText(text: "Item count updated in cart");
+      return {
+        'res': true,
+      };
+    } catch (e) {
+      print("error updating item count in cart : $e");
+
+      BotToast.showText(text: "Cannot update item in your cart right now.");
+      return {
+        'res': false,
+      };
     }
   }
 }

@@ -210,9 +210,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       InkWell(
                         onTap: () async {
-                          if (_nameController.text.length > 0 &&
-                              _emailController.text.length > 0 &&
-                              _addressController.text.length > 0) {
+                          if (_addressController.text.length > 0) {
                             setState(() {
                               _isUpdating = true;
                             });
@@ -226,7 +224,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             });
                             Navigator.of(context).pop('success');
                           } else {
-                            BotToast.showText(text: "Details cannot be empty");
+                            BotToast.showText(
+                                text: "Address must be provided");
                           }
                         },
                         child: Container(

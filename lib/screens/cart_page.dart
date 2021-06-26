@@ -1,298 +1,293 @@
 import 'package:flutter/material.dart';
+import 'package:shopat/firebase_repository/src/firestore_service.dart';
+import 'package:shopat/firebase_repository/src/models/cart_item.dart';
 import 'package:shopat/global/colors.dart';
+import 'package:shopat/screens/place_order_page.dart';
 
-class Cart extends StatelessWidget {
+class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
+
+  @override
+  _CartState createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
+  bool _isLoading = false;
+  List<CartItem> _cartListItems = [];
+
+  Future<void> getCartList() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _cartListItems = await FirestoreService().getUsercartList();
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCartList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
-      appBar: AppBar(
-        title: Text(
-          "My Cart",
-          style: TextStyle(
-            fontFamily: "Poppins",
+      backgroundColor: AppColors.backgroundColorLight,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: GestureDetector(
+        onTap: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PlaceOrder(
+                  cartsList: _cartListItems,
+                ),
+              ));
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 15),
+          width: MediaQuery.of(context).size.width * 0.40,
+          height: 50.0,
+          decoration: BoxDecoration(
+            color: AppColors.accentColor,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "Checkout",
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        elevation: 0,
       ),
-      body: SingleChildScrollView(
+      body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          showModalBottomSheet<dynamic>(
-                            backgroundColor: Colors.transparent,
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (context) => Container(
-                              height: MediaQuery.of(context).size.height * 0.4,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20.0),
-                                  topRight: Radius.circular(20.0),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "1 ",
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey[700],
-                                          ),
-                                        ),
-                                        Text(
-                                          "item",
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            color: Colors.grey[700],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Divider(color: Colors.grey),
-                                  ListTile(
-                                    title: Text(
-                                      "Delivering to:",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      "Ram nagar extension\nSiraj colony, 2452255 Chattisgarh India",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                      ),
-                                    ),
-                                    trailing: Container(
-                                      decoration: BoxDecoration(
-                                        color: AppColors.accentColor,
-                                        borderRadius:
-                                            BorderRadius.circular(50.0),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Divider(color: Colors.grey),
-                                  ListTile(
-                                    title: Text(
-                                      "Seller:",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      "Rajaji Clothing Centre, Sirah",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                      ),
-                                    ),
-                                    trailing: GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 15),
-                                        width: 120.0,
-                                        height: 50.0,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.accentColor,
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "Contact Seller",
-                                            style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Divider(color: Colors.grey),
-                                  ListTile(
-                                    title: Row(
-                                      children: [
-                                        Text(
-                                          "Total: ",
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            color: Colors.grey[400],
-                                          ),
-                                        ),
-                                        Text(
-                                          "₹ 500/-",
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            color: Colors.grey[700],
-                                            fontSize: 20.0,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    trailing: GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 15),
-                                        width: 100.0,
-                                        height: 50.0,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.accentColor,
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "Checkout",
-                                            style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 8.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(24.0),
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        //Navigator.of(context).pop("success");
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(Icons.arrow_back),
+                    ),
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                    Text(
+                      'My Cart',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.0,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 8.0,
+            ),
+            Expanded(
+              child: _isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                            new AlwaysStoppedAnimation<Color>(Colors.black),
+                      ),
+                    )
+                  : _cartListItems.length == 0
+                      ? Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            "No items in your cart",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 20.0,
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                FlutterLogo(size: 80.0),
-                                SizedBox(width: 20.0),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Flutter Logo",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontSize: 16.0,
+                        )
+                      : RefreshIndicator(
+                          onRefresh: getCartList,
+                          color: Colors.black,
+                          child: ListView.builder(
+                              itemCount: _cartListItems.length,
+                              itemBuilder: (context, index) {
+                                CartItem item = _cartListItems[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Container(
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 12.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(24.0),
                                       ),
                                     ),
-                                    SizedBox(height: 4.0),
-                                    Text(
-                                      "This is official Flutter Logo",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontSize: 14.0,
-                                        color: Colors.grey[400],
-                                      ),
-                                    ),
-                                    SizedBox(height: 4.0),
-                                    Text(
-                                      "Size : 40",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontSize: 14.0,
-                                        color: Colors.grey[400],
-                                      ),
-                                    ),
-                                    SizedBox(height: 8.0),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          "₹ 500/-",
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontSize: 16.0,
-                                          ),
-                                        ),
-                                        SizedBox(width: 36.0),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 15),
-                                            width: 100.0,
-                                            height: 50.0,
-                                            decoration: BoxDecoration(
-                                              color: AppColors.highlighedColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                            child: Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.25,
+                                            child: FittedBox(
+                                              fit: BoxFit.scaleDown,
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    "Remove",
-                                                    style: TextStyle(
-                                                      fontFamily: "Poppins",
-                                                      color: Colors.white,
-                                                    ),
-                                                  ),
-                                                  Icon(
-                                                    Icons.delete_outline,
-                                                    color: Colors.white,
-                                                  ),
+                                                  FlutterLogo(size: 80.0),
+                                                  SizedBox(width: 20.0),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${item.productName}",
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 16.0,
+                                                ),
+                                              ),
+                                              SizedBox(height: 4.0),
+                                              Text(
+                                                "${item.description1}",
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 14.0,
+                                                  color: Colors.grey[400],
+                                                ),
+                                              ),
+                                              SizedBox(height: 4.0),
+                                              Text(
+                                                "${item.description2}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 14.0,
+                                                  color: Colors.grey[400],
+                                                ),
+                                              ),
+                                              SizedBox(height: 8.0),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    // "₹ " +
+                                                    //     "${item.sellingPrice}  X  ${item.numberOfItems}",
+                                                    "₹ " +
+                                                        "${item.sellingPrice}",
+                                                    style: TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 16.0,
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 32.0),
+                                                  Text(
+                                                    "No of items: ${item.numberOfItems}",
+                                                    style: TextStyle(
+                                                      fontFamily: "Poppins",
+                                                      fontSize: 16.0,
+                                                    ),
+                                                  ),
+                                                  // InkWell(
+                                                  //   onTap: () async {
+                                                  //     var result =
+                                                  //         await FirestoreService()
+                                                  //             .removeItemFromCartList(
+                                                  //       item.id,
+                                                  //     );
+                                                  //     if (result['res'] ==
+                                                  //         true) {
+                                                  //       getCartList();
+                                                  //     }
+                                                  //   },
+                                                  //   child: Container(
+                                                  //     decoration: BoxDecoration(
+                                                  //       color:
+                                                  //           Color(0xFFC20A0A),
+                                                  //       borderRadius:
+                                                  //           BorderRadius
+                                                  //               .circular(50.0),
+                                                  //     ),
+                                                  //     child: Padding(
+                                                  //       padding:
+                                                  //           const EdgeInsets
+                                                  //               .only(
+                                                  //         left: 12.0,
+                                                  //         right: 12.0,
+                                                  //         top: 8.0,
+                                                  //         bottom: 8.0,
+                                                  //       ),
+                                                  //       child: Row(
+                                                  //         children: [
+                                                  //           Text(
+                                                  //             'Remove',
+                                                  //             style: TextStyle(
+                                                  //               fontFamily:
+                                                  //                   "Poppins",
+                                                  //               fontSize: 14.0,
+                                                  //               fontWeight:
+                                                  //                   FontWeight
+                                                  //                       .w400,
+                                                  //               color: Color(
+                                                  //                   0xFFF6F7FB),
+                                                  //             ),
+                                                  //           ),
+                                                  //           Icon(
+                                                  //             Icons
+                                                  //                 .delete_outline,
+                                                  //             color: Color(
+                                                  //                 0xFFF6F7FB),
+                                                  //           ),
+                                                  //         ],
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  // ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
                         ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(height: 4.0);
-                    },
-                    itemCount: 3,
-                  )
-                ],
-              ),
             ),
           ],
         ),

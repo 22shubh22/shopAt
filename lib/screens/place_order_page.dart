@@ -1,164 +1,238 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:shopat/firebase_repository/src/firestore_service.dart';
+import 'package:shopat/firebase_repository/src/models/cart_item.dart';
 import 'package:shopat/global/colors.dart';
 import 'package:shopat/widgets/separator.dart';
 
-class PlaceOrder extends StatelessWidget {
-  const PlaceOrder({Key? key}) : super(key: key);
+class PlaceOrder extends StatefulWidget {
+  final List<CartItem> cartsList;
+  const PlaceOrder({
+    Key? key,
+    required this.cartsList,
+  }) : super(key: key);
+
+  @override
+  _PlaceOrderState createState() => _PlaceOrderState();
+}
+
+class _PlaceOrderState extends State<PlaceOrder> {
+  int totalItems = 0;
+  int totalAmount = 0;
+  bool _isLoading = false;
+  String address = "";
+  @override
+  void initState() {
+    calculatingTheCosts(widget.cartsList);
+    super.initState();
+  }
+
+  calculatingTheCosts(List<CartItem> cartsList) async {
+    setState(() {
+      _isLoading = false;
+    });
+    int tempItems = 0, tempTotal = 0;
+    for (var i in cartsList) {
+      tempItems = tempItems + i.numberOfItems;
+      tempTotal = tempTotal + (i.numberOfItems * i.sellingPrice);
+    }
+    var s = await FirestoreService().getProfileDetails();
+    setState(() {
+      address = s['address'];
+      totalItems = tempItems;
+      totalAmount = tempTotal;
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      appBar: AppBar(
-        title: Text(
-          "Place Order",
-          style: TextStyle(
-            fontFamily: "Poppins",
-          ),
-        ),
-        elevation: 0,
-      ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DottedBorder(
-              strokeWidth: 1,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Container(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
+                child: Row(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Frock 9 year cotton",
-                          style: TextStyle(fontFamily: "Poppins"),
-                        ),
-                        Text(
-                          "1 x ₹229",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
+                    SizedBox(
+                      width: 16.0,
                     ),
-                    SizedBox(height: 4.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Cotton Saree",
-                          style: TextStyle(fontFamily: "Poppins"),
-                        ),
-                        Text(
-                          "2 x ₹5250",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(Icons.arrow_back),
                     ),
-                    SizedBox(height: 8.0),
-                    MySeparator(),
-                    SizedBox(height: 8.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Total items",
-                          style: TextStyle(fontFamily: "Poppins"),
-                        ),
-                        Text(
-                          "3",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
+                    SizedBox(
+                      width: 16.0,
                     ),
-                    SizedBox(height: 4.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Net total",
-                          style: TextStyle(fontFamily: "Poppins"),
-                        ),
-                        Text(
-                          "₹10,729",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.0),
-                    MySeparator(),
-                    SizedBox(height: 8.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Your savings",
-                          style: TextStyle(fontFamily: "Poppins"),
-                        ),
-                        Text(
-                          "₹29",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Total Payable Amount",
-                          style: TextStyle(fontFamily: "Poppins"),
-                        ),
-                        Text(
-                          "₹10,700",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8.0),
-                    MySeparator(),
-                    SizedBox(height: 8.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Billing Address",
-                          style: TextStyle(fontFamily: "Poppins"),
-                        ),
-                        Text(
-                          "Ram nagar extension\n Siraj colony, 2452255 \n Chattisgarh India",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
-                    ),
+                    Text(
+                      'Place Order',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.0,
+                      ),
+                    )
                   ],
                 ),
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              height: 8.0,
+            ),
+            _isLoading
+                ? Expanded(
+                    child: Center(
+                        child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.black),
+                  )))
+                : Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DottedBorder(
+                          strokeWidth: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Column(
+                                  children: widget.cartsList.map((item) {
+                                    return Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              "${item.productName}",
+                                              style: TextStyle(
+                                                  fontFamily: "Poppins"),
+                                            ),
+                                            Text(
+                                              "${item.numberOfItems} x ₹${item.sellingPrice}",
+                                              style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                color: Colors.grey[400],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 4.0),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                                SizedBox(height: 8.0),
+                                MySeparator(),
+                                SizedBox(height: 8.0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Total items",
+                                      style: TextStyle(fontFamily: "Poppins"),
+                                    ),
+                                    Text(
+                                      "$totalItems",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: Colors.grey[400],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 4.0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Net total",
+                                      style: TextStyle(fontFamily: "Poppins"),
+                                    ),
+                                    Text(
+                                      "₹$totalAmount",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: Colors.grey[400],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 8.0),
+                                MySeparator(),
+                                SizedBox(height: 8.0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Your savings",
+                                      style: TextStyle(fontFamily: "Poppins"),
+                                    ),
+                                    Text(
+                                      "₹ 0",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: Colors.grey[400],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 4.0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Total Payable Amount",
+                                      style: TextStyle(fontFamily: "Poppins"),
+                                    ),
+                                    Text(
+                                      "₹$totalAmount",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 8.0),
+                                MySeparator(),
+                                SizedBox(height: 8.0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Billing Address",
+                                      style: TextStyle(fontFamily: "Poppins"),
+                                    ),
+                                    Text(
+                                      "$address",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: Colors.grey[400],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Column(
