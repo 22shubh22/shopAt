@@ -69,10 +69,10 @@ class _DescriptionPageState extends State<DescriptionPage> {
                             ),
                             child: Image.network(
                               // product.image should rome here.
-                              "https://images.unsplash.com/photo-1615886753866-79396abc446e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
+                              "${widget._product.image}",
                               height: MediaQuery.of(context).size.height * 0.45,
                               width: double.infinity,
-                              fit: BoxFit.cover,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),

@@ -324,4 +324,79 @@ class FirestoreService {
       };
     }
   }
+
+  addNewOrder(
+    List<CartItem> cartItems,
+    int totalBillAmount,
+    int totalItems,
+  ) async {
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    var data = await _instance.collection('users').doc(phoneNumber).get();
+
+    List orders = data.data()?['orders'];
+
+    List serializedCart = [];
+    for (var i in cartItems) {
+      serializedCart.add(i.toJson());
+    }
+    orders.add({
+      "cartItems": serializedCart,
+      "totalBillAmount": totalBillAmount,
+      "totalItems": totalItems,
+      "createdAt": DateTime.now().toString(),
+      "status": "Pending",
+    });
+
+    try {
+      await _instance
+          .collection('users')
+          .doc(phoneNumber)
+          .update({'orders': orders});
+      await _instance.collection('users').doc(phoneNumber).update({'cart': []});
+
+      print("Order placed succesfully");
+
+      BotToast.showText(text: "Order placed succesfully");
+      return {
+        'res': true,
+      };
+    } catch (e) {
+      print("error placing order : $e");
+
+      BotToast.showText(text: "Cannot place order right now");
+      return {
+        'res': false,
+      };
+    }
+  }
+
+  clearCartList() async {
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    try {
+      await _instance.collection('users').doc(phoneNumber).update({'cart': []});
+    } catch (e) {
+      print("error placing order : $e");
+    }
+  }
+
+  getUserOrders() async {
+    String phoneNumber = AuthService().getPhoneNumber() ?? "";
+    var user = await _instance.collection('users').doc(phoneNumber).get();
+    List<Map<String, dynamic>> ordersList = [];
+    for (var i in user.data()?['orders']) {
+      List<CartItem> cartItemsLocal = [];
+
+      for (var j in i['cartItems']) {
+        cartItemsLocal.add(CartItem.fromJson(j));
+      }
+      ordersList.add({
+        "cartItems": cartItemsLocal,
+        "totalBillAmount": i['totalBillAmount'],
+        "totalItems": i['totalItems'],
+        "createdAt": i['createdAt'],
+        "status": i['status'],
+      });
+    }
+    return ordersList;
+  }
 }

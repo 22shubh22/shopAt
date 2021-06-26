@@ -155,32 +155,32 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "4,125 items",
+                  "${productsList.length} items",
                   style: TextStyle(
                     fontFamily: "Poppins",
                     color: Colors.grey[800],
                   ),
                 ),
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.filter_alt_outlined,
-                        color: Colors.grey[800],
-                      ),
-                      SizedBox(
-                        width: 4.0,
-                      ),
-                      Text(
-                        "Filter",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Colors.grey[800],
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                // GestureDetector(
+                //   child: Row(
+                //     children: [
+                //       Icon(
+                //         Icons.filter_alt_outlined,
+                //         color: Colors.grey[800],
+                //       ),
+                //       SizedBox(
+                //         width: 4.0,
+                //       ),
+                //       Text(
+                //         "Filter",
+                //         style: TextStyle(
+                //           fontFamily: "Poppins",
+                //           color: Colors.grey[800],
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // )
               ],
             ),
             SizedBox(

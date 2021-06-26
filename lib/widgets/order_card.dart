@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shopat/global/colors.dart';
 
-enum OrderStatus { Delivered, Cancelled, Pending }
-
 class OrderCardWidget extends StatelessWidget {
   final String title;
   final String date;
   final int cost;
-  final OrderStatus orderStatus;
+  final String orderStatus;
   const OrderCardWidget({
     Key? key,
     required this.title,
@@ -75,15 +73,11 @@ class OrderCardWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  orderStatus == OrderStatus.Delivered
-                      ? "Delivered"
-                      : orderStatus == OrderStatus.Pending
-                          ? "Pending"
-                          : "Cancelled",
+                  orderStatus,
                   style: TextStyle(
-                    color: orderStatus == OrderStatus.Delivered
+                    color: orderStatus == "Delivered"
                         ? Color(0xFF10C600)
-                        : orderStatus == OrderStatus.Pending
+                        : orderStatus == "Pending"
                             ? Color(0xFFFF8413)
                             : Color(0xFFF74810),
                     fontFamily: "Poppins",
