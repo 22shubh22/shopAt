@@ -49,37 +49,6 @@ class _DescriptionPageState extends State<DescriptionPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.primaryColor,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: GestureDetector(
-          onTap: () {},
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 15),
-            width: MediaQuery.of(context).size.width * 0.40,
-            height: 50.0,
-            decoration: BoxDecoration(
-              color: AppColors.accentColor,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "Visit Cart",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: Colors.white,
-                    ),
-                  ),
-                  Icon(
-                    Icons.arrow_forward,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
         body: _isLoading
             ? Center(
                 child: CircularProgressIndicator(

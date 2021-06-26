@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shopat/firebase_repository/auth.dart';
 import 'package:shopat/firebase_repository/src/entities/product_entity.dart';
 import 'package:shopat/firebase_repository/src/firestore_service.dart';
+import 'package:shopat/firebase_repository/src/models/cart_item.dart';
 import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/cart_page.dart';
 import 'package:shopat/screens/description_page.dart';
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
 
   bool _isListLoading = false;
   List<ProductEntity> productsList = [];
+  List<CartItem> cartList = [];
 
   int checkoutTotal = 0;
   updateCheckoutTotal(int total) {
@@ -42,10 +44,12 @@ class _HomePageState extends State<HomePage> {
       _isListLoading = true;
     });
     var pList = await FirestoreService().getProductsList();
+    var cList = await FirestoreService().getUsercartList();
     print(pList);
     setState(() {
       _isListLoading = false;
       productsList = pList;
+      cartList = cList;
     });
   }
 
@@ -81,9 +85,12 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           IconButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              var result = await Navigator.push(
                   context, MaterialPageRoute(builder: (context) => Cart()));
+              if (result == "success") {
+                getProductsLocal();
+              }
             },
             icon: Icon(
               Icons.shopping_cart_outlined,
@@ -194,12 +201,18 @@ class _HomePageState extends State<HomePage> {
                         itemCount: productsList.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
+                          int notOfItems = 0;
                           var product = productsList[index];
+                          for (var i in cartList) {
+                            if (i.id == product.id) {
+                              notOfItems = i.numberOfItems;
+                            }
+                          }
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
                             child: ProductCard(
                               imageUrl: product.image,
-                              id: product.id.substring(16),
+                              id: product.id,
                               productName: product.productName,
                               productDescription: product.description1,
                               productDescription2: product.description2,
@@ -212,6 +225,8 @@ class _HomePageState extends State<HomePage> {
                                         builder: (context) =>
                                             DescriptionPage(product)));
                               },
+                              productEntity: product,
+                              notOfItems: notOfItems,
                             ),
                           );
                         },
@@ -223,13 +238,16 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PlaceOrder()));
+        onTap: () async {
+          var result = await Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Cart()));
+          if (result == "success") {
+            getProductsLocal();
+          }
         },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 15),
-          width: 200.0,
+          width: MediaQuery.of(context).size.width * 0.40,
           height: 50.0,
           decoration: BoxDecoration(
             color: AppColors.accentColor,
@@ -237,21 +255,13 @@ class _HomePageState extends State<HomePage> {
           ),
           child: Center(
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "Checkout",
+                  "Visit Cart",
                   style: TextStyle(
                     fontFamily: "Poppins",
                     color: Colors.white,
-                  ),
-                ),
-                Text(
-                  " (₹ $checkoutTotal) ",
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Icon(

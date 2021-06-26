@@ -1,5 +1,7 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:shopat/firebase_repository/src/entities/product_entity.dart';
+import 'package:shopat/firebase_repository/src/firestore_service.dart';
 import 'package:shopat/global/colors.dart';
 
 class ProductCard extends StatefulWidget {
@@ -11,6 +13,8 @@ class ProductCard extends StatefulWidget {
   final int price;
   final int quantityAvailable;
   final Function() onClick;
+  final ProductEntity productEntity;
+  final int notOfItems;
 
   ProductCard({
     Key? key,
@@ -22,6 +26,8 @@ class ProductCard extends StatefulWidget {
     required this.price,
     required this.onClick,
     required this.quantityAvailable,
+    required this.productEntity,
+    required this.notOfItems,
   }) : super(key: key);
 
   @override
@@ -30,6 +36,11 @@ class ProductCard extends StatefulWidget {
 
 class _ProductCardState extends State<ProductCard> {
   var quantitySelect = 0;
+  @override
+  void initState() {
+    quantitySelect = widget.notOfItems;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,11 +106,38 @@ class _ProductCardState extends State<ProductCard> {
                           color: AppColors.accentColor,
                         ),
                         child: IconButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (quantitySelect >= 1) {
-                              setState(() {
-                                quantitySelect--;
-                              });
+                              bool isItemAdded =
+                                  await FirestoreService().isItemAddedToCart(
+                                widget.productEntity.id,
+                              );
+                              print("Is Item Added : $isItemAdded");
+                              if (isItemAdded) {
+                                int itemCount = quantitySelect - 1;
+                                if (itemCount == 0) {
+                                  var result = await FirestoreService()
+                                      .removeItemFromCartList(
+                                    widget.productEntity.id,
+                                  );
+                                  if (result['res'] == true) {
+                                    setState(() {
+                                      quantitySelect--;
+                                    });
+                                  }
+                                } else {
+                                  var result = await FirestoreService()
+                                      .updateItemFromCartList(
+                                    widget.productEntity.id,
+                                    itemCount,
+                                  );
+                                  if (result['res'] == true) {
+                                    setState(() {
+                                      quantitySelect--;
+                                    });
+                                  }
+                                }
+                              } else {}
                             } else {
                               BotToast.showText(
                                   text: "Quantity cannot be negative");
@@ -128,12 +166,38 @@ class _ProductCardState extends State<ProductCard> {
                           color: AppColors.accentColor,
                         ),
                         child: IconButton(
-                          onPressed: () {
-                            // TODO: max_select is currently five
+                          onPressed: () async {
                             if (quantitySelect < widget.quantityAvailable) {
-                              setState(() {
-                                quantitySelect++;
-                              });
+                              bool isItemAdded =
+                                  await FirestoreService().isItemAddedToCart(
+                                widget.productEntity.id,
+                              );
+                              print("Is Item Added : $isItemAdded");
+                              if (isItemAdded) {
+                                int itemCount = quantitySelect + 1;
+                                var result = await FirestoreService()
+                                    .updateItemFromCartList(
+                                  widget.productEntity.id,
+                                  itemCount,
+                                );
+                                if (result['res'] == true) {
+                                  setState(() {
+                                    quantitySelect++;
+                                  });
+                                }
+                              } else {
+                                int itemCount = quantitySelect + 1;
+                                var result = await FirestoreService()
+                                    .addProductToCartList(
+                                  widget.productEntity,
+                                  itemCount,
+                                );
+                                if (result['res'] == true) {
+                                  setState(() {
+                                    quantitySelect++;
+                                  });
+                                }
+                              }
                             } else {
                               BotToast.showText(
                                   text:
