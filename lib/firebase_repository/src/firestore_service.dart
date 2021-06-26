@@ -14,7 +14,7 @@ class FirestoreService {
     if (s.data() == null) {
       print("User with phone number $phoneNumber not exists. Signing him up");
       await _instance.collection('users').doc(phoneNumber).set({
-        'phoneNumber': phoneNumber,
+        'customerNumber': phoneNumber,
         'uid': uid,
         'address': "",
         'name': "",
@@ -35,7 +35,9 @@ class FirestoreService {
 
     for (var i in products.docs) {
       var data = i.data();
-      productsList.add(ProductEntity.fromJson(data));
+      if (i['quantityAvailable'] > 0) {
+        productsList.add(ProductEntity.fromJson(data));
+      }
     }
     return productsList;
   }
