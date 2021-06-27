@@ -273,28 +273,33 @@ class _PlaceOrderState extends State<PlaceOrder> {
                 )
               : InkWell(
                   onTap: () async {
-                    setState(() {
-                      _isPlacingOrder = true;
-                    });
-                    var result = await FirestoreService().addNewOrder(
-                      widget.cartsList,
-                      totalAmount,
-                      totalItems,
-                    );
-                    if (result['res'] == true) {
+                    if (address.length > 0) {
                       setState(() {
-                        _isPlacingOrder = false;
+                        _isPlacingOrder = true;
                       });
-
-                      while (Navigator.canPop(context)) {
-                        Navigator.of(context).pop();
-                      }
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ),
+                      var result = await FirestoreService().addNewOrder(
+                        widget.cartsList,
+                        totalAmount,
+                        totalItems,
                       );
+                      if (result['res'] == true) {
+                        setState(() {
+                          _isPlacingOrder = false;
+                        });
+
+                        while (Navigator.canPop(context)) {
+                          Navigator.of(context).pop();
+                        }
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HomePage(),
+                          ),
+                        );
+                      }
+                    } else {
+                      BotToast.showText(
+                          text: "Please add address to place order");
                     }
                   },
                   child: Container(
