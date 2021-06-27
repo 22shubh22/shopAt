@@ -339,6 +339,11 @@ class FirestoreService {
 
     List serializedCart = [];
     for (var i in cartItems) {
+      var data = await _instance.collection('products').doc(i.id).get();
+      int quantityAvailable = data.data()?['quantityAvailable'];
+      await _instance.collection('products').doc(i.id).update({
+        'quantityAvailable': quantityAvailable - i.numberOfItems,
+      });
       serializedCart.add(i.toJson());
     }
     orders.add({
