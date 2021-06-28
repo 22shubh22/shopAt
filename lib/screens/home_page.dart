@@ -8,7 +8,7 @@ import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/cart_page.dart';
 import 'package:shopat/screens/description_page.dart';
 // import 'package:shopat/screens/login_page.dart';
-import 'package:shopat/screens/place_order_page.dart';
+// import 'package:shopat/screens/place_order_page.dart';
 import 'package:shopat/screens/profile_settings_page.dart';
 import 'package:shopat/screens/wishlist_page.dart';
 // import 'package:shopat/firebase_repository/firebase_repository.dart';

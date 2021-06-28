@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// TODO: isApproved field in product wntity and model
 class ProductEntity {
   final String id;
   final String productName;
