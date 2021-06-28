@@ -6,9 +6,6 @@ import 'package:shopat/global/colors.dart';
 import 'package:shopat/screens/my_orders.dart';
 import 'package:shopat/screens/profile.dart';
 import 'package:shopat/screens/wishlist_page.dart';
-import 'package:shopat/seller_ui/contact_admin.dart';
-import 'package:shopat/seller_ui/seller_home.dart';
-import 'package:shopat/seller_ui/seller_login.dart';
 
 import 'login_page.dart';
 
@@ -278,78 +275,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                         Divider(
                           color: AppColors.accentColor.withOpacity(0.15),
                           height: 0.5,
-                        ),
-
-                        //Seller APP UI
-
-                        SizedBox(
-                          height: 32.0,
-                        ),
-                        Text(
-                          'Seller App UI',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SellerLogin(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Login Screen',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ContactAdmin(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Contact Admin',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SellerHome(),
-                              ),
-                            );
-                          },
-                          child: Text(
-                            'Home Page',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12.0,
-                            ),
-                          ),
                         ),
                       ],
                     ),
