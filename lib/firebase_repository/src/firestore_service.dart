@@ -340,8 +340,11 @@ class FirestoreService {
 
     List serializedCart = [];
     var customerDetails = await getProfileDetails();
+
+    Map<String, List> sellerProducts = {};
+
     for (var i in cartItems) {
-      print(i.toJson());
+      print("cart item : ${i.toJson()}");
       //Updating quantity available value
       var data = await _instance.collection('products').doc(i.id).get();
       int quantityAvailable = data.data()?['quantityAvailable'];
@@ -351,21 +354,38 @@ class FirestoreService {
       serializedCart.add(i.toJson());
 
       // Add cartItems to productSubmitted
+
+      try {
+        List sProducts = sellerProducts[i.shopNumber] ?? [];
+
+        sProducts.add(
+          i.toJson(),
+        );
+        sellerProducts[i.shopNumber] = sProducts;
+      } catch (e) {
+        print("error : $e");
+      }
+    }
+
+    print("sprods: $sellerProducts");
+
+    for (var seller in sellerProducts.keys) {
       var productsData =
-          await _instance.collection('sellers').doc(i.shopNumber).get();
+          await _instance.collection('sellers').doc(seller).get();
 
       List productsRequested = productsData.data()?['productsRequested'];
 
       productsRequested.add({
-        'productInfo': i.toJson(),
+        'productInfo': sellerProducts[seller],
         'customerDetails': customerDetails,
         'createdAt': DateTime.now(),
         'status': "Pending"
       });
-      await _instance.collection('sellers').doc(i.shopNumber).update({
+      await _instance.collection('sellers').doc(seller).update({
         'productsRequested': productsRequested,
       });
     }
+
     orders.add({
       "cartItems": serializedCart,
       "totalBillAmount": totalBillAmount,
