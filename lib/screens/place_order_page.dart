@@ -178,7 +178,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Your savings",
+                                      "Extra charges",
                                       style: TextStyle(fontFamily: "Poppins"),
                                     ),
                                     Text(
@@ -219,11 +219,14 @@ class _PlaceOrderState extends State<PlaceOrder> {
                                       "Billing Address",
                                       style: TextStyle(fontFamily: "Poppins"),
                                     ),
-                                    Text(
-                                      "$address",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        color: Colors.grey[400],
+                                    SizedBox(width: 32.0,),
+                                    Expanded(
+                                      child: Text(
+                                        "$address",
+                                        style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          color: Colors.grey[400],
+                                        ),
                                       ),
                                     ),
                                   ],

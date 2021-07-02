@@ -10,10 +10,10 @@ class FirestoreService {
   FirebaseFirestore _instance = FirebaseFirestore.instance;
 
   getUserByPhone(String phoneNumber, String? uid) async {
-    var s = await _instance.collection('users').doc(phoneNumber).get();
+    var s = await _instance.collection('customers').doc(phoneNumber).get();
     if (s.data() == null) {
       print("User with phone number $phoneNumber not exists. Signing him up");
-      await _instance.collection('users').doc(phoneNumber).set({
+      await _instance.collection('customers').doc(phoneNumber).set({
         'customerNumber': phoneNumber,
         'uid': uid,
         'address': "",
@@ -35,7 +35,7 @@ class FirestoreService {
 
     for (var i in products.docs) {
       var data = i.data();
-      if (i['quantityAvailable'] > 0) {
+      if (i['quantityAvailable'] > 0 && i['status'] == "Online") {
         productsList.add(ProductEntity.fromJson(data));
       }
     }
@@ -44,7 +44,7 @@ class FirestoreService {
 
   Future<bool> isItemWishListed(String pId) async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var data = await _instance.collection('users').doc(phoneNumber).get();
+    var data = await _instance.collection('customers').doc(phoneNumber).get();
     List wishList = data.data()?['wishlist'];
     bool _isProductAdded = false;
     for (var i in wishList) {
@@ -60,7 +60,7 @@ class FirestoreService {
     ProductEntity product,
   ) async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var data = await _instance.collection('users').doc(phoneNumber).get();
+    var data = await _instance.collection('customers').doc(phoneNumber).get();
 
     List wishList = data.data()?['wishlist'];
 
@@ -79,7 +79,7 @@ class FirestoreService {
 
     try {
       await _instance
-          .collection('users')
+          .collection('customers')
           .doc(phoneNumber)
           .update({'wishlist': wishList});
 
@@ -97,7 +97,7 @@ class FirestoreService {
     String productId,
   ) async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var data = await _instance.collection('users').doc(phoneNumber).get();
+    var data = await _instance.collection('customers').doc(phoneNumber).get();
 
     List wishList = data.data()?['wishlist'];
     int? indexToRemove;
@@ -113,7 +113,7 @@ class FirestoreService {
 
     try {
       await _instance
-          .collection('users')
+          .collection('customers')
           .doc(phoneNumber)
           .update({'wishlist': wishList});
 
@@ -131,7 +131,7 @@ class FirestoreService {
   Future<List<WishListItem>> getUserWishList() async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
     List<WishListItem> wishList = [];
-    var user = await _instance.collection('users').doc(phoneNumber).get();
+    var user = await _instance.collection('customers').doc(phoneNumber).get();
 
     for (var i in user.data()?['wishlist']) {
       wishList.add(WishListItem.fromJson(i));
@@ -141,7 +141,7 @@ class FirestoreService {
 
   getProfileDetails() async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var data = await _instance.collection('users').doc(phoneNumber).get();
+    var data = await _instance.collection('customers').doc(phoneNumber).get();
     String name = data.data()?['name'];
     String email = data.data()?['email'];
     String address = data.data()?['address'];
@@ -159,7 +159,7 @@ class FirestoreService {
   }) async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
     try {
-      await _instance.collection('users').doc(phoneNumber).update({
+      await _instance.collection('customers').doc(phoneNumber).update({
         'name': name,
         'email': email,
         'address': address,
@@ -177,7 +177,7 @@ class FirestoreService {
   Future<bool> isItemAddedToCart(String pId) async {
     print("One");
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var data = await _instance.collection('users').doc(phoneNumber).get();
+    var data = await _instance.collection('customers').doc(phoneNumber).get();
     List cartList = data.data()?['cart'];
     bool _isProductAdded = false;
     for (var i in cartList) {
@@ -195,7 +195,7 @@ class FirestoreService {
     int numberOfItems,
   ) async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var data = await _instance.collection('users').doc(phoneNumber).get();
+    var data = await _instance.collection('customers').doc(phoneNumber).get();
 
     List cartList = data.data()?['cart'];
 
@@ -211,11 +211,12 @@ class FirestoreService {
       "quantityAvailable": product.quantityAvailable,
       "addedOn": DateTime.now().toString(),
       "numberOfItems": numberOfItems,
+      "shopNumber": product.shopNumber,
     });
 
     try {
       await _instance
-          .collection('users')
+          .collection('customers')
           .doc(phoneNumber)
           .update({'cart': cartList});
 
@@ -239,7 +240,7 @@ class FirestoreService {
     String productId,
   ) async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var data = await _instance.collection('users').doc(phoneNumber).get();
+    var data = await _instance.collection('customers').doc(phoneNumber).get();
 
     List cartList = data.data()?['cart'];
     int? indexToRemove;
@@ -255,7 +256,7 @@ class FirestoreService {
 
     try {
       await _instance
-          .collection('users')
+          .collection('customers')
           .doc(phoneNumber)
           .update({'cart': cartList});
 
@@ -278,7 +279,7 @@ class FirestoreService {
   Future<List<CartItem>> getUsercartList() async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
     List<CartItem> cartList = [];
-    var user = await _instance.collection('users').doc(phoneNumber).get();
+    var user = await _instance.collection('customers').doc(phoneNumber).get();
 
     for (var i in user.data()?['cart']) {
       cartList.add(CartItem.fromJson(i));
@@ -291,7 +292,7 @@ class FirestoreService {
     int numberOfItems,
   ) async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var data = await _instance.collection('users').doc(phoneNumber).get();
+    var data = await _instance.collection('customers').doc(phoneNumber).get();
 
     List cartList = data.data()?['cart'];
     int? indexToUpdate;
@@ -307,7 +308,7 @@ class FirestoreService {
 
     try {
       await _instance
-          .collection('users')
+          .collection('customers')
           .doc(phoneNumber)
           .update({'cart': cartList});
 
@@ -333,18 +334,37 @@ class FirestoreService {
     int totalItems,
   ) async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var data = await _instance.collection('users').doc(phoneNumber).get();
+    var data = await _instance.collection('customers').doc(phoneNumber).get();
 
     List orders = data.data()?['orders'];
 
     List serializedCart = [];
+    var customerDetails = await getProfileDetails();
     for (var i in cartItems) {
+      print(i.toJson());
+      //Updating quantity available value
       var data = await _instance.collection('products').doc(i.id).get();
       int quantityAvailable = data.data()?['quantityAvailable'];
       await _instance.collection('products').doc(i.id).update({
         'quantityAvailable': quantityAvailable - i.numberOfItems,
       });
       serializedCart.add(i.toJson());
+
+      // Add cartItems to productSubmitted
+      var productsData =
+          await _instance.collection('sellers').doc(i.shopNumber).get();
+
+      List productsRequested = productsData.data()?['productsRequested'];
+
+      productsRequested.add({
+        'productInfo': i.toJson(),
+        'customerDetails': customerDetails,
+        'createdAt': DateTime.now(),
+        'status': "Pending"
+      });
+      await _instance.collection('sellers').doc(i.shopNumber).update({
+        'productsRequested': productsRequested,
+      });
     }
     orders.add({
       "cartItems": serializedCart,
@@ -356,10 +376,13 @@ class FirestoreService {
 
     try {
       await _instance
-          .collection('users')
+          .collection('customers')
           .doc(phoneNumber)
           .update({'orders': orders});
-      await _instance.collection('users').doc(phoneNumber).update({'cart': []});
+      await _instance
+          .collection('customers')
+          .doc(phoneNumber)
+          .update({'cart': []});
 
       print("Order placed succesfully");
 
@@ -380,7 +403,10 @@ class FirestoreService {
   clearCartList() async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
     try {
-      await _instance.collection('users').doc(phoneNumber).update({'cart': []});
+      await _instance
+          .collection('customers')
+          .doc(phoneNumber)
+          .update({'cart': []});
     } catch (e) {
       print("error placing order : $e");
     }
@@ -388,7 +414,7 @@ class FirestoreService {
 
   getUserOrders() async {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
-    var user = await _instance.collection('users').doc(phoneNumber).get();
+    var user = await _instance.collection('customers').doc(phoneNumber).get();
     List<Map<String, dynamic>> ordersList = [];
     for (var i in user.data()?['orders']) {
       List<CartItem> cartItemsLocal = [];

@@ -106,18 +106,20 @@ class _WishListPageState extends State<WishListPage> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                DescriptionPage(ProductEntity(
-                                                  item.id,
-                                                  item.productName,
-                                                  item.shopId,
-                                                  item.description1,
-                                                  item.description2,
-                                                  item.image,
-                                                  item.costPrice,
-                                                  item.sellingPrice,
-                                                  item.quantityAvailable,
-                                                  [],
-                                                ))));
+                                                DescriptionPage(
+                                                  ProductEntity(
+                                                      item.id,
+                                                      item.productName,
+                                                      item.shopId,
+                                                      item.description1,
+                                                      item.description2,
+                                                      item.image,
+                                                      item.costPrice,
+                                                      item.sellingPrice,
+                                                      item.quantityAvailable,
+                                                      [],
+                                                      ""),
+                                                )));
                                   },
                                   child: Padding(
                                     padding: const EdgeInsets.only(bottom: 8.0),

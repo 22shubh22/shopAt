@@ -48,29 +48,31 @@ class _CartState extends State<Cart> {
                 ),
               ));
         },
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          width: MediaQuery.of(context).size.width * 0.40,
-          height: 50.0,
-          decoration: BoxDecoration(
-            color: AppColors.accentColor,
-            borderRadius: BorderRadius.circular(30),
-          ),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "Checkout",
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    color: Colors.white,
+        child: _cartListItems.length > 0
+            ? Container(
+                padding: EdgeInsets.symmetric(vertical: 15),
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: 50.0,
+                decoration: BoxDecoration(
+                  color: AppColors.accentColor,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        "Checkout",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              )
+            : Container(),
       ),
       body: SafeArea(
         child: Column(
