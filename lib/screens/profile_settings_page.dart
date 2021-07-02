@@ -240,26 +240,29 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                           color: AppColors.accentColor.withOpacity(0.15),
                           height: 0.5,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 24.0, right: 24.0, top: 24.0, bottom: 24.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  FirebaseAuth.instance.signOut();
-                                  while (Navigator.canPop(context)) {
-                                    Navigator.pop(context);
-                                  }
-                                  Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => LoginPage(),
-                                    ),
-                                  );
-                                },
-                                child: Text(
+                        InkWell(
+                          onTap: () {
+                            FirebaseAuth.instance.signOut();
+                            while (Navigator.canPop(context)) {
+                              Navigator.pop(context);
+                            }
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 24.0,
+                                right: 24.0,
+                                top: 24.0,
+                                bottom: 24.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
                                   'Log Out',
                                   style: TextStyle(
                                     color: Colors.black,
@@ -268,8 +271,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                                     fontSize: 16.0,
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                         Divider(
