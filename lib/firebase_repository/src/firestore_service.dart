@@ -378,7 +378,7 @@ class FirestoreService {
       productsRequested.add({
         'productInfo': sellerProducts[seller],
         'customerDetails': customerDetails,
-        'createdAt': DateTime.now(),
+        'createdAt': DateTime.now().toString(),
         'status': "Pending"
       });
       await _instance.collection('sellers').doc(seller).update({
