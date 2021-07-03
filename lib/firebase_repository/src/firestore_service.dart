@@ -35,7 +35,7 @@ class FirestoreService {
 
     for (var i in products.docs) {
       var data = i.data();
-      if (i['quantityAvailable'] > 0 && i['status'] == "Online") {
+      if (i['quantityAvailable'] > 0 && i['status'] == "Accepted") {
         productsList.add(ProductEntity.fromJson(data));
       }
     }
@@ -378,7 +378,7 @@ class FirestoreService {
       productsRequested.add({
         'productInfo': sellerProducts[seller],
         'customerDetails': customerDetails,
-        'createdAt': DateTime.now(),
+        'createdAt': DateTime.now().toString(),
         'status': "Pending"
       });
       await _instance.collection('sellers').doc(seller).update({
