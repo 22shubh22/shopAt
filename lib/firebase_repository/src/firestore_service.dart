@@ -35,7 +35,7 @@ class FirestoreService {
 
     for (var i in products.docs) {
       var data = i.data();
-      if (i['quantityAvailable'] > 0 && i['status'] == "Online") {
+      if (i['quantityAvailable'] > 0 && i['status'] == "Accepted") {
         productsList.add(ProductEntity.fromJson(data));
       }
     }
