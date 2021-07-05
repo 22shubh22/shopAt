@@ -1,31 +1,31 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shopat/firebase_repository/src/firestore_service.dart';
 import 'package:shopat/firebase_repository/src/models/cart_item.dart';
 import 'package:shopat/global/colors.dart';
-import 'package:shopat/screens/home_page.dart';
 import 'package:shopat/widgets/separator.dart';
 
-class PlaceOrder extends StatefulWidget {
+class MyOrderDetails extends StatefulWidget {
   final List<CartItem> cartsList;
-  const PlaceOrder({
+  final String date, status;
+  const MyOrderDetails({
     Key? key,
     required this.cartsList,
+    required this.date,
+    required this.status,
   }) : super(key: key);
 
   @override
-  _PlaceOrderState createState() => _PlaceOrderState();
+  _MyOrderDetailsState createState() => _MyOrderDetailsState();
 }
 
-class _PlaceOrderState extends State<PlaceOrder> {
+class _MyOrderDetailsState extends State<MyOrderDetails> {
   int totalItems = 0;
   int totalAmount = 0;
   bool _isLoading = false;
   String address = "";
 
-  bool _isPlacingOrder = false;
   @override
   void initState() {
     calculatingTheCosts(widget.cartsList);
@@ -75,7 +75,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                       width: 16.0,
                     ),
                     Text(
-                      'Place Order',
+                      'Order Details',
                       style: TextStyle(
                         color: Colors.black,
                         fontFamily: "Poppins",
@@ -221,9 +221,7 @@ class _PlaceOrderState extends State<PlaceOrder> {
                                       style: TextStyle(fontFamily: "Poppins"),
                                     ),
                                     Text(
-                                      DateFormat('yMMMd').format(DateTime.parse(
-                                        DateTime.now().toString(),
-                                      )),
+                                      "${widget.date}",
                                       style: TextStyle(
                                         fontFamily: "Poppins",
                                         color: Colors.grey[400],
@@ -255,6 +253,26 @@ class _PlaceOrderState extends State<PlaceOrder> {
                                     ),
                                   ],
                                 ),
+                                SizedBox(height: 8.0),
+                                MySeparator(),
+                                SizedBox(height: 8.0),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Billing Status",
+                                      style: TextStyle(fontFamily: "Poppins"),
+                                    ),
+                                    Text(
+                                      "${widget.status}",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
@@ -264,114 +282,6 @@ class _PlaceOrderState extends State<PlaceOrder> {
                   ),
           ],
         ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Text(
-              "Go Back",
-              style: TextStyle(fontFamily: "Poppins"),
-            ),
-          ),
-          SizedBox(height: 8.0),
-          _isPlacingOrder
-              ? Container(
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                  width: MediaQuery.of(context).size.width * 0.40,
-                  height: 50.0,
-                  decoration: BoxDecoration(
-                    color: AppColors.accentColor,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Placing Order ....",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                )
-              : InkWell(
-                  onTap: () async {
-                    setState(() {
-                      _isPlacingOrder = true;
-                    });
-                    var result = await FirestoreService().addNewOrder(
-                      widget.cartsList,
-                      totalAmount,
-                      totalItems,
-                    );
-                    if (result['res'] == true) {
-                      setState(() {
-                        _isPlacingOrder = false;
-                      });
-
-                      while (Navigator.canPop(context)) {
-                        Navigator.of(context).pop();
-                      }
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => HomePage(),
-                        ),
-                      );
-                    }
-                    // if (address.length > 0) {
-                    //   setState(() {
-                    //     _isPlacingOrder = true;
-                    //   });
-                    //   var result = await FirestoreService().addNewOrder(
-                    //     widget.cartsList,
-                    //     totalAmount,
-                    //     totalItems,
-                    //   );
-                    //   if (result['res'] == true) {
-                    //     setState(() {
-                    //       _isPlacingOrder = false;
-                    //     });
-
-                    //     while (Navigator.canPop(context)) {
-                    //       Navigator.of(context).pop();
-                    //     }
-                    //     Navigator.pushReplacement(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => HomePage(),
-                    //       ),
-                    //     );
-                    //   }
-                    // } else {
-                    //   BotToast.showText(
-                    //       text: "Please add address to place order");
-                    // }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    width: MediaQuery.of(context).size.width * 0.40,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      color: AppColors.accentColor,
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Place Order",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-        ],
       ),
     );
   }
