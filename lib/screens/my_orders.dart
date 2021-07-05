@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:shopat/firebase_repository/src/firestore_service.dart';
 import 'package:shopat/firebase_repository/src/models/cart_item.dart';
 import 'package:shopat/global/colors.dart';
+import 'package:shopat/screens/my_order_details.dart';
 import 'package:shopat/widgets/chip.dart';
 import 'package:shopat/widgets/order_card.dart';
 
@@ -187,23 +188,45 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                           ordersList[index]['cartItems'][0];
                                       return toShowOrder(
                                               ordersList[index]['status'])
-                                          ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 12.0),
-                                              child: OrderCardWidget(
-                                                title: ordersList[index]
-                                                            ['totalItems'] >
-                                                        1
-                                                    ? "${cartItem.productName} + ${ordersList[index]['totalItems'] - 1} items"
-                                                    : "${cartItem.productName}",
-                                                cost: ordersList[index]
-                                                    ['totalBillAmount'],
-                                                date: DateFormat('yMMMd')
-                                                    .format(DateTime.parse(
-                                                        ordersList[index]
-                                                            ['createdAt'])),
-                                                orderStatus: ordersList[index]
-                                                    ['status'],
+                                          ? InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MyOrderDetails(
+                                                      cartsList:
+                                                          ordersList[index]
+                                                              ['cartItems'],
+                                                      date: DateFormat('yMMMd')
+                                                          .format(DateTime
+                                                              .parse(ordersList[
+                                                                      index][
+                                                                  'createdAt'])),
+                                                      status: ordersList[index]
+                                                          ['status'],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 12.0),
+                                                child: OrderCardWidget(
+                                                  title: ordersList[index]
+                                                              ['totalItems'] >
+                                                          1
+                                                      ? "${cartItem.productName} + ${ordersList[index]['totalItems'] - 1} items"
+                                                      : "${cartItem.productName}",
+                                                  cost: ordersList[index]
+                                                      ['totalBillAmount'],
+                                                  date: DateFormat('yMMMd')
+                                                      .format(DateTime.parse(
+                                                          ordersList[index]
+                                                              ['createdAt'])),
+                                                  orderStatus: ordersList[index]
+                                                      ['status'],
+                                                ),
                                               ),
                                             )
                                           : Container();
