@@ -353,7 +353,7 @@ class FirestoreService {
       });
       serializedCart.add(i.toJson());
 
-      // Add cartItems to productSubmitted
+      //sort the list items based on seller.
 
       try {
         List sProducts = sellerProducts[i.shopNumber] ?? [];
@@ -369,18 +369,64 @@ class FirestoreService {
 
     print("sprods: $sellerProducts");
 
+    //should make a seller wise map
+    /*
+          {
+            '<sellerNumber>' : {
+               'productInfo': [
+                               <cartItem sold by this seller>,
+                                <cartItem sold by this seller>
+                               ],
+               'customerDetails': { 
+                                     'name': name,
+                                      'email': email,
+                                      'address': address,
+                                   },
+               'createdAt': DateTime.now().toString(),
+               'status': "Pending"
+            },
+
+            '<sellerNumber2>' : {
+               'productInfo': [
+                               <cartItem sold by this seller2>,
+                                <cartItem sold by this seller2>
+                               ],
+               'customerDetails': { 
+                                     'name': name,
+                                      'email': email,
+                                      'address': address,
+                                   },
+               'createdAt': DateTime.now().toString(),
+               'status': "Pending"
+            }
+
+          }
+       */
+
+    // this variable holds the seller wise map that admin has access to.
+    Map<String, dynamic> sellerWiseMap = {};
+
     for (var seller in sellerProducts.keys) {
-      var productsData =
-          await _instance.collection('sellers').doc(seller).get();
-
-      List productsRequested = productsData.data()?['productsRequested'];
-
-      productsRequested.add({
+      sellerWiseMap[seller] = {
         'productInfo': sellerProducts[seller],
         'customerDetails': customerDetails,
         'createdAt': DateTime.now().toString(),
         'status': "Pending"
-      });
+      };
+    }
+
+    // store the og map in masterlist.
+    var res = await _instance
+        .collection('ordersMasterList')
+        .add({'order': sellerWiseMap});
+
+    // now store the id of the document from masterlist to individual seller's list.
+    for (var seller in sellerProducts.keys) {
+      var productsData =
+          await _instance.collection('sellers').doc(seller).get();
+      List productsRequested = productsData.data()?['productsRequested'];
+
+      productsRequested.add(res.id);
       await _instance.collection('sellers').doc(seller).update({
         'productsRequested': productsRequested,
       });
