@@ -174,23 +174,23 @@ class _PlaceOrderState extends State<PlaceOrder> {
                                 SizedBox(height: 8.0),
                                 MySeparator(),
                                 SizedBox(height: 8.0),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Extra charges",
-                                      style: TextStyle(fontFamily: "Poppins"),
-                                    ),
-                                    Text(
-                                      "₹ 0",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        color: Colors.grey[400],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                // Row(
+                                //   mainAxisAlignment:
+                                //       MainAxisAlignment.spaceBetween,
+                                //   children: [
+                                //     Text(
+                                //       "Extra charges",
+                                //       style: TextStyle(fontFamily: "Poppins"),
+                                //     ),
+                                //     Text(
+                                //       "₹ 0",
+                                //       style: TextStyle(
+                                //         fontFamily: "Poppins",
+                                //         color: Colors.grey[400],
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
                                 SizedBox(height: 4.0),
                                 Row(
                                   mainAxisAlignment:

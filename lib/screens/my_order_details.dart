@@ -1,6 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:shopat/firebase_repository/src/firestore_service.dart';
 import 'package:shopat/firebase_repository/src/models/cart_item.dart';
 import 'package:shopat/global/colors.dart';
@@ -174,24 +174,6 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
                                 SizedBox(height: 8.0),
                                 MySeparator(),
                                 SizedBox(height: 8.0),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Extra charges",
-                                      style: TextStyle(fontFamily: "Poppins"),
-                                    ),
-                                    Text(
-                                      "₹ 0",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        color: Colors.grey[400],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 4.0),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

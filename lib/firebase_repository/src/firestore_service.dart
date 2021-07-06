@@ -432,13 +432,7 @@ class FirestoreService {
       });
     }
 
-    orders.add({
-      "cartItems": serializedCart,
-      "totalBillAmount": totalBillAmount,
-      "totalItems": totalItems,
-      "createdAt": DateTime.now().toString(),
-      "status": "Pending",
-    });
+    orders.add(res.id);
 
     try {
       await _instance
@@ -482,20 +476,42 @@ class FirestoreService {
     String phoneNumber = AuthService().getPhoneNumber() ?? "";
     var user = await _instance.collection('customers').doc(phoneNumber).get();
     List<Map<String, dynamic>> ordersList = [];
+    print(user.data()?['orders']);
     for (var i in user.data()?['orders']) {
+      print(" i is : $i");
+      var orderData =
+          await _instance.collection('ordersMasterList').doc(i).get();
+      Map map = orderData.data()?['order'];
       List<CartItem> cartItemsLocal = [];
-
-      for (var j in i['cartItems']) {
-        cartItemsLocal.add(CartItem.fromJson(j));
+      String createdAt = "";
+      String status = "";
+      int _totalItems = 0;
+      int _totalAmount = 0;
+      for (var pInfo in map.keys) {
+        for (var j in map[pInfo]['productInfo']) {
+          print(" j is $j");
+          try {
+            cartItemsLocal.add(CartItem.fromJson(j));
+            _totalAmount += int.parse(j['sellingPrice'].toString()) *
+                int.parse(j['numberOfItems'].toString());
+            _totalItems += int.parse(j['numberOfItems'].toString());
+          } catch (e) {
+            print(" cart items adding error : $e");
+          }
+        }
+        createdAt = map[pInfo]['createdAt'];
+        status = map[pInfo]['status'];
       }
       ordersList.add({
+        "orderId": i,
         "cartItems": cartItemsLocal,
-        "totalBillAmount": i['totalBillAmount'],
-        "totalItems": i['totalItems'],
-        "createdAt": i['createdAt'],
-        "status": i['status'],
+        "totalBillAmount": _totalAmount,
+        "totalItems": _totalItems,
+        "createdAt": createdAt,
+        "status": status,
       });
     }
+    print(' orders list : $ordersList');
     return ordersList;
   }
 }

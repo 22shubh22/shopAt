@@ -6,12 +6,14 @@ class OrderCardWidget extends StatelessWidget {
   final String date;
   final int cost;
   final String orderStatus;
+  final String orderId;
   const OrderCardWidget({
     Key? key,
     required this.title,
     required this.cost,
     required this.date,
     required this.orderStatus,
+    required this.orderId,
   }) : super(key: key);
 
   @override
@@ -55,6 +57,20 @@ class OrderCardWidget extends StatelessWidget {
                 fontFamily: "Poppins",
                 fontWeight: FontWeight.w400,
                 fontSize: 14.0,
+              ),
+            ),
+            SizedBox(
+              height: 6.0,
+            ),
+            Text(
+              "Order Id :  $orderId",
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: "Poppins",
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400,
+                color: Colors.black.withOpacity(0.60),
               ),
             ),
             SizedBox(

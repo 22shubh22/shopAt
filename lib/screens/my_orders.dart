@@ -226,6 +226,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                                                               ['createdAt'])),
                                                   orderStatus: ordersList[index]
                                                       ['status'],
+                                                  orderId: ordersList[index]
+                                                      ['orderId'],
                                                 ),
                                               ),
                                             )
