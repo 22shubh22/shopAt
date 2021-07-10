@@ -91,11 +91,7 @@ class OrderCardWidget extends StatelessWidget {
                 Text(
                   orderStatus,
                   style: TextStyle(
-                    color: orderStatus == "Delivered"
-                        ? Color(0xFF10C600)
-                        : orderStatus == "Pending"
-                            ? Color(0xFFFF8413)
-                            : Color(0xFFF74810),
+                    color: getColor(orderStatus),
                     fontFamily: "Poppins",
                     fontWeight: FontWeight.w400,
                     fontSize: 14.0,
@@ -107,5 +103,17 @@ class OrderCardWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+Color getColor(String status) {
+  if (status == "Pending") {
+    return Color(0xFFF74810);
+  } else if (status == "Partially Ready") {
+    return Color(0xFFFF8413);
+  } else if (status == "Ready") {
+    return Color(0xFFFF8413).withOpacity(0.75);
+  } else {
+    return Color(0xFF10C600);
   }
 }
