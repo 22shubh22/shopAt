@@ -416,9 +416,11 @@ class FirestoreService {
     }
 
     // store the og map in masterlist.
-    var res = await _instance
-        .collection('ordersMasterList')
-        .add({'order': sellerWiseMap});
+    var res = await _instance.collection('ordersMasterList').add({
+      'order': sellerWiseMap,
+      'adminOrderStatus': 'Pending',
+      'paymentStatus': 'Pending',
+    });
 
     // now store the id of the document from masterlist to individual seller's list.
     for (var seller in sellerProducts.keys) {
