@@ -489,6 +489,7 @@ class FirestoreService {
       String status = "";
       int _totalItems = 0;
       int _totalAmount = 0;
+      bool allready = true;
       for (var pInfo in map.keys) {
         for (var j in map[pInfo]['productInfo']) {
           print(" j is $j");
@@ -502,7 +503,16 @@ class FirestoreService {
           }
         }
         createdAt = map[pInfo]['createdAt'];
-        status = map[pInfo]['status'];
+        if (map[pInfo]['status'] != "Ready") {
+          allready = false;
+        }
+      }
+      if (orderData.data()?['adminOrderStatus'] == "Complete") {
+        status = "Delivered";
+      } else if (allready) {
+        status = "Ready";
+      } else {
+        status = "Pending";
       }
       ordersList.add({
         "orderId": i,

@@ -59,7 +59,14 @@ class _HomePageState extends State<HomePage> {
     productsFilteredList = [];
 
     for (var i in productsList) {
-      if (i.productName.toLowerCase().contains(query)) {
+      bool _inTags = false;
+      for (var i in i.tags) {
+        if (i.toLowerCase().contains(query)) {
+          _inTags = true;
+          break;
+        }
+      }
+      if (i.productName.toLowerCase().contains(query) || _inTags) {
         productsFilteredList.add(i);
       }
     }
