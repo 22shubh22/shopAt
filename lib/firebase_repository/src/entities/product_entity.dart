@@ -12,7 +12,7 @@ class ProductEntity {
   final int costPrice;
   final int sellingPrice;
   final int quantityAvailable;
-  final List tag;
+  final List tags;
   final String shopNumber;
 
   ProductEntity(
@@ -25,7 +25,7 @@ class ProductEntity {
     this.costPrice,
     this.sellingPrice,
     this.quantityAvailable,
-    this.tag,
+    this.tags,
     this.shopNumber,
   );
 
@@ -40,7 +40,7 @@ class ProductEntity {
       "costPrice": costPrice,
       "sellingPrice": sellingPrice,
       "quantityAvailable": quantityAvailable,
-      "tag": tag,
+      "tags": tags,
       "shopNumber": shopNumber,
     };
   }
@@ -56,7 +56,7 @@ class ProductEntity {
       json["costPrice"] as int,
       json["sellingPrice"] as int,
       json["quantityAvailable"] as int,
-      json["tag"] ?? [],
+      json["tags"] ?? [],
       json["shopNumber"] as String,
     );
   }
@@ -72,7 +72,7 @@ class ProductEntity {
       (snap.data() as dynamic)['costPrice'],
       (snap.data() as dynamic)['sellingPrice'],
       (snap.data() as dynamic)['quantityAvailable'],
-      (snap.data() as dynamic)['tag'],
+      (snap.data() as dynamic)['tags'],
       (snap.data() as dynamic)['shopNumber'],
     );
   }
@@ -88,7 +88,7 @@ class ProductEntity {
       "costPrice": costPrice,
       "sellingPrice": sellingPrice,
       "quantityAvailable": quantityAvailable,
-      "tag": tag,
+      "tags": tags,
       "shopNumber": shopNumber,
     };
   }

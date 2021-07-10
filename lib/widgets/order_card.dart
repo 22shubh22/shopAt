@@ -109,10 +109,10 @@ class OrderCardWidget extends StatelessWidget {
 Color getColor(String status) {
   if (status == "Pending") {
     return Color(0xFFF74810);
-  } else if (status == "Partially Ready") {
-    return Color(0xFFFF8413);
   } else if (status == "Ready") {
-    return Color(0xFFFF8413).withOpacity(0.75);
+    return Color(0xFFFF8413);
+  } else if (status == "Cancelled") {
+    return Color(0xFFFF0000);
   } else {
     return Color(0xFF10C600);
   }

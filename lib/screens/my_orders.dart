@@ -45,6 +45,8 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
       return status == 'Cancelled';
     } else if (_chipSelected == 'pending') {
       return status == 'Pending';
+    } else if (_chipSelected == 'ready') {
+      return status == 'Ready';
     } else {
       return true;
     }
@@ -125,54 +127,89 @@ class _MyOrdersPageState extends State<MyOrdersPage> {
                             SizedBox(
                               height: 16.0,
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _chipSelected = 'all';
-                                    });
-                                  },
-                                  child: ChipWidget(
-                                    chipText: "  All  ",
-                                    isActive: _chipSelected == 'all',
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _chipSelected = 'all';
+                                        });
+                                      },
+                                      child: ChipWidget(
+                                        chipText: "  All  ",
+                                        isActive: _chipSelected == 'all',
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _chipSelected = 'delivered';
-                                    });
-                                  },
-                                  child: ChipWidget(
-                                    chipText: " Delivered ",
-                                    isActive: _chipSelected == 'delivered',
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _chipSelected = 'pending';
+                                        });
+                                      },
+                                      child: ChipWidget(
+                                        chipText: " Pending ",
+                                        isActive: _chipSelected == 'pending',
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _chipSelected = 'cancelled';
-                                    });
-                                  },
-                                  child: ChipWidget(
-                                    chipText: " Cancelled ",
-                                    isActive: _chipSelected == 'cancelled',
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _chipSelected = 'ready';
+                                        });
+                                      },
+                                      child: ChipWidget(
+                                        chipText: " Ready ",
+                                        isActive: _chipSelected == 'ready',
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      _chipSelected = 'pending';
-                                    });
-                                  },
-                                  child: ChipWidget(
-                                    chipText: " Pending ",
-                                    isActive: _chipSelected == 'pending',
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _chipSelected = 'delivered';
+                                        });
+                                      },
+                                      child: ChipWidget(
+                                        chipText: " Delivered ",
+                                        isActive: _chipSelected == 'delivered',
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _chipSelected = 'cancelled';
+                                        });
+                                      },
+                                      child: ChipWidget(
+                                        chipText: " Cancelled ",
+                                        isActive: _chipSelected == 'cancelled',
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             SizedBox(
                               height: 24.0,
