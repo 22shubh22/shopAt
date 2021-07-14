@@ -149,6 +149,7 @@ class FirestoreService {
       'name': name,
       'email': email,
       'address': address,
+      'phoneNumber': phoneNumber,
     };
   }
 
