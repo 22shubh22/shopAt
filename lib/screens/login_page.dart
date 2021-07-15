@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 45.0),
             Text(
-              'Shop At',
+              'Bilaspur Stores',
               style: GoogleFonts.righteous(
                 textStyle: TextStyle(
                   fontSize: 40.0,
@@ -81,13 +81,19 @@ class _LoginPageState extends State<LoginPage> {
               trailingActionWidget: Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: _isOtpSending
-                    ? Text(
-                        'Sending .....',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 16.0,
-                          color: Colors.black,
+                    ? InkWell(
+                        onTap: () {
+                          BotToast.showText(
+                              text: "Please wait while we send OTP");
+                        },
+                        child: Text(
+                          'Sending .....',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
                         ),
                       )
                     : InkWell(
@@ -99,9 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                             });
                             await verifyPhone("+91" + _phoneCont.text);
                             print("I am here00");
-                            setState(() {
-                              _isOtpSending = false;
-                            });
                           } else {
                             BotToast.showText(
                                 text: "Mobile number should be 10 digits");
@@ -276,6 +279,9 @@ class _LoginPageState extends State<LoginPage> {
     final PhoneVerificationFailed verificationFailed =
         (FirebaseAuthException authException) {
       print('${authException.message}');
+      setState(() {
+        _isOtpSending = false;
+      });
       BotToast.showText(text: '${authException.message}');
     };
 
@@ -283,6 +289,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         this.codeSent = true;
         verificationId = verId;
+        _isOtpSending = false;
       });
       BotToast.showText(text: "OTP sent succesfully");
     };

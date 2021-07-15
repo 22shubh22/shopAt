@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
         title: Text(
-          "Shop At",
+          "Bilaspur Stores",
           style: TextStyle(
             fontFamily: "Righteous",
             fontWeight: FontWeight.w600,
