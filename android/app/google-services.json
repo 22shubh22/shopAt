@@ -7,6 +7,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:991330551936:android:8dc2b528b28a6f8560fe65",
+        "android_client_info": {
+          "package_name": "com.bilaspur.stores"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991330551936-dglvuq32h2apdfue9m8tan43j794glc8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bilaspur.stores",
+            "certificate_hash": "68b8e617000e4d50b99167813bf92a367ea75967"
+          }
+        },
+        {
+          "client_id": "991330551936-1usc0imjeiqjatlsfk976j0bgqq4q35m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNQ5WmcaFyscubR9hYnTTML83pTxeG1gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991330551936-1usc0imjeiqjatlsfk976j0bgqq4q35m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:991330551936:android:cca3f6aea0c00f2260fe65",
         "android_client_info": {
           "package_name": "com.example.shopat"
@@ -14,11 +51,141 @@
       },
       "oauth_client": [
         {
-          "client_id": "991330551936-a72a5d0k8e4jdouanbvi0fjmomobgo7v.apps.googleusercontent.com",
+          "client_id": "991330551936-775mqsp6qpa1fracv8k9ct38luhq1eaq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.shopat",
+            "certificate_hash": "ae4f0b52b835eaf4b6166446426c1ea509d6cc8c"
+          }
+        },
+        {
+          "client_id": "991330551936-7fdc5tkvr2m1ih98ptr5vgndc4hcoh32.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopat",
+            "certificate_hash": "7ebba7a8581cb54929e0c67853a5e7883d9d5441"
+          }
+        },
+        {
+          "client_id": "991330551936-hslei1ur1vrkat5l2qql6cqa3qao7a1j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopat",
+            "certificate_hash": "68b8e617000e4d50b99167813bf92a367ea75967"
+          }
+        },
+        {
+          "client_id": "991330551936-1usc0imjeiqjatlsfk976j0bgqq4q35m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNQ5WmcaFyscubR9hYnTTML83pTxeG1gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991330551936-1usc0imjeiqjatlsfk976j0bgqq4q35m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991330551936:android:efeeafb7f4f4c45560fe65",
+        "android_client_info": {
+          "package_name": "com.example.shopat_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991330551936-6ttu9kjv7aao7u655u0bu6riqd8f769a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopat_admin",
+            "certificate_hash": "68b8e617000e4d50b99167813bf92a367ea75967"
+          }
+        },
+        {
+          "client_id": "991330551936-et9josfveke52ujqfpsi3j9jfq3djd4b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopat_admin",
             "certificate_hash": "cdbec65a8eedb3d3db957fb4972a17484f3183d6"
+          }
+        },
+        {
+          "client_id": "991330551936-ksinu9nbhkbm50t9qdcios9srltrveuk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopat_admin",
+            "certificate_hash": "ae4f0b52b835eaf4b6166446426c1ea509d6cc8c"
+          }
+        },
+        {
+          "client_id": "991330551936-1usc0imjeiqjatlsfk976j0bgqq4q35m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNQ5WmcaFyscubR9hYnTTML83pTxeG1gg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991330551936-1usc0imjeiqjatlsfk976j0bgqq4q35m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991330551936:android:2b517318250a329a60fe65",
+        "android_client_info": {
+          "package_name": "com.example.shopat_seller"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991330551936-8k8enp7g13d5j0oabk9s89olvsnvu429.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopat_seller",
+            "certificate_hash": "ae4f0b52b835eaf4b6166446426c1ea509d6cc8c"
+          }
+        },
+        {
+          "client_id": "991330551936-qq2qb7gi6u9irh007or98fcpghlorvo4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopat_seller",
+            "certificate_hash": "68b8e617000e4d50b99167813bf92a367ea75967"
+          }
+        },
+        {
+          "client_id": "991330551936-sjbd5tl55shftvck982mkmvplfr1hqdq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopat_seller",
+            "certificate_hash": "cdbec65a8eedb3d3db957fb4972a17484f3183d6"
+          }
+        },
+        {
+          "client_id": "991330551936-t6fc2tmmv858hk822df9l13au6rl2531.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.shopat_seller",
+            "certificate_hash": "7ebba7a8581cb54929e0c67853a5e7883d9d5441"
           }
         },
         {
